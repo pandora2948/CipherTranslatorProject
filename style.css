@@ -1,5 +1,5 @@
 :root {
-  --btn-bg-color: #67b3e4;
+  --main-color: #67b3e4;
   --text-place-holder-color: #7d7d7d;
   --border-color: #dddddd;
   --arrow-color: #7e7e7e;
@@ -75,6 +75,10 @@ main {
   padding: 0 0 0 1.5rem;
   font-size: 1.3rem;
   height: 4rem;
+}
+
+.header__button {
+  transition: color 0.15s;
 }
 
 .header__button--algorithm span {
@@ -157,6 +161,11 @@ textarea.body__textarea:focus {
   height: 100%;
   font-size: 1.4rem;
   font-weight: 700;
-  background-color: var(--btn-bg-color);
+  background-color: var(--main-color);
   color: white;
+}
+
+.mouse-on {
+  color: var(--main-color);
+  cursor: pointer;
 }
