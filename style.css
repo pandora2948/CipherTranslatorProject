@@ -1,0 +1,162 @@
+:root {
+  --btn-bg-color: #67b3e4;
+  --text-place-holder-color: #7d7d7d;
+  --border-color: #dddddd;
+  --arrow-color: #7e7e7e;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+.doc-header {
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.doc-header a {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0 1rem 2rem;
+  text-decoration: none;
+  color: black;
+}
+
+.header__logo {
+  height: 3rem;
+}
+
+.doc-header h1 {
+  height: 3rem;
+  font-size: 2.5rem;
+  line-height: 3rem;
+  margin: 0 0 0 0.6rem;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 3.5rem 0 0 0;
+  width: 100%;
+}
+
+.translator {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  border: 2px solid var(--border-color);
+  min-height: 35rem;
+}
+
+.translator:nth-of-type(1) {
+  margin-right: 1rem;
+}
+
+.translator__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header__button--algorithm {
+  padding: 0 0 0 1.5rem;
+  font-size: 1.3rem;
+  height: 4rem;
+}
+
+.header__button--algorithm span {
+  position: relative;
+  padding: 0 1rem;
+}
+.header__button--algorithm span::after {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-bottom: 2px solid var(--arrow-color);
+  border-right: 2px solid var(--arrow-color);
+  display: inline-block;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 0.6rem;
+  top: 0.3rem;
+}
+
+.header__button--exchange img {
+  width: 2rem;
+  padding: 1rem;
+}
+
+.translator__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+textarea.body__textarea {
+  border: none;
+  resize: none;
+  overflow: hidden;
+}
+
+textarea.body__textarea:focus {
+  outline: none;
+}
+
+.body__textarea {
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  min-height: 20rem;
+  flex: 1;
+}
+
+.body__tail {
+  align-self: flex-end;
+  margin: 1rem 2rem 1rem 0;
+  font-size: 1.5rem;
+  color: var(--text-place-holder-color);
+}
+
+.translator__footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  height: 4rem;
+}
+
+.footer__controller {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.controller__button {
+  border-right: 1px solid var(--border-color);
+}
+
+.controller__button img {
+  height: 2rem;
+  padding: 1rem 1.5rem;
+}
+
+.controller__button--reset {
+  height: 100%;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background-color: var(--btn-bg-color);
+  color: white;
+}
