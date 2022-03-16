@@ -45,22 +45,27 @@ button {
 main {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
   margin: 3.5rem 0 0 0;
   width: 100%;
 }
 
-.translator {
+.translator-wrapper {
   display: flex;
   flex-direction: column;
   width: 45%;
-  border: 2px solid var(--border-color);
-  min-height: 35rem;
 }
 
-.translator:nth-of-type(1) {
+.translator-wrapper:nth-of-type(1) {
   margin-right: 1rem;
+}
+
+.translator {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 2px solid var(--border-color);
+  min-height: 35rem;
 }
 
 .translator__header {
@@ -163,6 +168,10 @@ textarea.body__textarea:focus {
   font-weight: 700;
   background-color: var(--main-color);
   color: white;
+}
+
+.translator__key-area {
+  visibility: hidden;
 }
 
 .mouse-on {

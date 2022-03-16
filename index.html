@@ -19,40 +19,48 @@
     </a>
   </header>
   <main>
-    <section class="translator">
-      <article class="translator__header">
-        <button class="header__button header__button--algorithm" id="sourceAlgorithmSelector">Caesar Cipher <span>
-          </span></button>
-        <button class="header__button header__button--exchange" id="exchangeButton"><img
-            src="assets/image/bothWayArrow.png"></button>
-      </article>
-      <div class="translator__body">
-        <textarea class="body__textarea" id="textSource" placeholder="Please Write Text That You Translate"></textarea>
-        <p class="body__tail" id="sourceLength">0</p>
-      </div>
-      <div class="translator__footer">
-        <div class="footer__controller">
-          <button class="controller__button" id="keySelectorButton"><img src="./assets/image/key.png"></button>
-          <button class="controller__button" id="sourceCopyButton"><img src="./assets/image/copy.png"></button>
+    <div class="translator-wrapper">
+      <section class="translator">
+        <article class="translator__header">
+          <button class="header__button header__button--algorithm" id="sourceAlgorithmSelector">Caesar Cipher <span>
+            </span></button>
+          <button class="header__button header__button--exchange" id="exchangeButton"><img
+              src="assets/image/bothWayArrow.png"></button>
+        </article>
+        <div class="translator__body">
+          <textarea class="body__textarea" id="textSource"
+            placeholder="Please Write Text That You Translate"></textarea>
+          <p class="body__tail" id="sourceLength">0</p>
         </div>
-        <button class="controller__button--reset" id="resetKeyButton">Reset Key</button>
-      </div>
-    </section>
-    <section class="translator">
-      <article class="translator__header">
-        <button class="header__button header__button--algorithm" id="modifiedAlgorithmSelector">Caesar Cipher
-          <span></span></button>
-      </article>
-      <div class="translator__body">
-        <p class="body__textarea"></p>
-        <button class="body__tail" id="clearTextButton">Clear</button>
-      </div>
-      <div class="translator__footer">
-        <div class="footer__controller">
-          <button class="controller__button" id="modifiedCopyButton"><img src="./assets/image/copy.png"></button>
+        <div class="translator__footer">
+          <div class="footer__controller">
+            <button class="controller__button" id="keySelectorButton"><img src="./assets/image/key.png"></button>
+            <button class="controller__button" id="sourceCopyButton"><img src="./assets/image/copy.png"></button>
+          </div>
+          <button class="controller__button--reset" id="resetKeyButton">Reset Key</button>
         </div>
+      </section>
+      <div class="translator__key-area">
+
       </div>
-    </section>
+    </div>
+    <div class="translator-wrapper">
+      <section class="translator">
+        <article class="translator__header">
+          <button class="header__button header__button--algorithm" id="modifiedAlgorithmSelector">Caesar Cipher
+            <span></span></button>
+        </article>
+        <div class="translator__body">
+          <p class="body__textarea"></p>
+          <button class="body__tail" id="clearTextButton">Clear</button>
+        </div>
+        <div class="translator__footer">
+          <div class="footer__controller">
+            <button class="controller__button" id="modifiedCopyButton"><img src="./assets/image/copy.png"></button>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
   <script src="./scripts/app.js"></script>
 </body>
