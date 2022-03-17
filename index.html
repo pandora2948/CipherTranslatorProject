@@ -25,7 +25,7 @@
           <button class="header__button header__button--algorithm" id="sourceAlgorithmSelector">Caesar Cipher
             <span class="header__algorithm-arrow" id="algorithmSelectArrow">
             </span></button>
-          <ul class="header__algorithm-list hidden">
+          <ul class="header__algorithm-list hidden" id="algorithmPopupList">
             <li>Caesar cipher</li>
             <li>Vigenere Cipher</li>
           </ul>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </section>
-      <div class="translator__key-area hidden">
+      <div class="translator__key-area hidden" id="keyPopup">
         <span class="key-area__arrow--heading-button"></span>
         <span class="key-area__arrow--heading-key"></span>
         <ul class="key-area__list" id="keyScroll"></ul>
@@ -63,7 +63,7 @@
           <span class="header__algorithm-display" id="modifiedAlgorithmDisplay">Caesar Cipher</span>
         </article>
         <div class="translator__body">
-          <p class="body__textarea"></p>
+          <p class="body__textarea" id="modifiedTextArea"></p>
           <button class="body__tail body__tail--clear-button" id="clearTextButton">Clear</button>
         </div>
         <div class="translator__footer">
@@ -76,6 +76,7 @@
   </main>
   <script src="./scripts/app.js"></script>
   <script src="./scripts/translator.js"></script>
+  <script src="./scripts/event.js"></script>
 </body>
 
 </html>
