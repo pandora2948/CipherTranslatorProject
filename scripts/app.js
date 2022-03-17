@@ -12,28 +12,19 @@ const asciiCodeAssets = {
 
 const keyHanddler = {
   keyArray: [],
-  key: 3,
+  key: 0,
   isEncrypter: true,
 
-  createAlphabetList(cb, isScroll = false, isReverse = false) {
+  createAlphabetList(cb, isScroll = false) {
     const list = [];
     let scrollWeight = 0;
     if(isScroll) {
-      if(isReverse) {
         for (let i = 24; i < 26; i += 1) {
           const alphabet = document.createElement('li');
-          alphabet.innerHTML = cb(i)
-          list.push(alphabet)
+          alphabet.innerHTML = cb(i);
+          list.push(alphabet);
         }
-      }
-      else {
-        for (let i = -2; i < 0; i += 1) {
-          const alphabet = document.createElement('li');
-          alphabet.innerHTML = cb(i)
-          list.push(alphabet)
-        }
-      }
-      scrollWeight = 2;
+        scrollWeight = 2;
     }
   
     for (let i = 0; i < 26 + scrollWeight; i += 1) {
@@ -53,11 +44,11 @@ const scrollEvent = {
   listWidth: 0,
   isDragging: false,
 
-  handleRender(isEncrypter = true) {
+  handleRender(scroll, isEncrypter = true) {
     const {lowerStartCode, lowerLastCode} = asciiCodeAssets;
     let index = 0;
     if (isEncrypter === true) {
-      translator.scroll.childNodes.forEach((li) => {
+      scroll.childNodes.forEach((li) => {
       let value = lowerStartCode + (keyHanddler.key + index - 2) % 26;
       if (value < lowerStartCode) {
         value = lowerLastCode - (lowerStartCode - value);
@@ -67,7 +58,7 @@ const scrollEvent = {
     })
     }
     else {
-      translator.scroll.childNodes.forEach((li) => {
+      scroll.childNodes.forEach((li) => {
         let value = lowerStartCode + (index - keyHanddler.key + 1) % 26;
         if (value < lowerStartCode) {
           value = lowerLastCode - (lowerStartCode - value - 1);
@@ -90,21 +81,19 @@ const scrollEvent = {
       keyHanddler.key = 26 + keyHanddler.key % 26;
     }
     keyIndicator.innerText = keyHanddler.key;
-    encrypter.translate()
+    algorithm.caesar()
   },
 
   handlePosition(scroll) {
     scroll.childNodes.forEach((li) => {
-      li.style.transform = `translateX(${encrypter.scrollEvent.scrollValue}px)`
+      li.style.transform = `translateX(${scrollEvent.scrollValue}px)`
     });
   },
 
-  handleClick(scroll) {
-    scroll.childNodes.forEach(li => li.classList.remove('dropped'));
+  handleClick() {
     scrollEvent.startX = e.clientX;
     scrollEvent.isDragging = true;
     scrollEvent.listWidth = 21.6;
-    scroll.classList.add('dragging');
   },
 
   handleDrag(e) {
@@ -218,7 +207,7 @@ const algorithm = {
     }
     if (inputLength < asciiLength) {
       for (let i = 0; i < asciiLength - inputLength; i += 1) {
-        encrypter.ascii.pop();
+        listOfAscii.pop();
       }
     }
     const tag = listOfAscii
