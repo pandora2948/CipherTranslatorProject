@@ -93,10 +93,7 @@ main {
   border: 2px solid var(--border-color);
   background-color: white;
   opacity: 1;
-  transition-property: opacity, display;
-  transition-duration: 10s, 0s;
-  transition-delay: 0, 2s;
-  transition-timing-function: ease, linear;
+  transition: opacity 0.2s 0s linear;
 }
 
 .header__algorithm-list li {
@@ -112,6 +109,7 @@ main {
 .header__algorithm-arrow {
   position: relative;
   padding: 0 1rem;
+  transition: transform ease 1s;
 }
 
 .header__algorithm-arrow::after {
@@ -133,6 +131,7 @@ main {
 .header__button--exchange img {
   width: 2rem;
   padding: 1rem;
+  transition: transform ease 0.5s;
 }
 
 .translator__body {
@@ -154,7 +153,7 @@ textarea.body__textarea:focus {
 .body__textarea {
   padding: 1rem 1.5rem;
   font-size: 1.5rem;
-  min-height: 10rem;
+  height: 100%;
   flex: 1;
 }
 
@@ -213,7 +212,8 @@ textarea.body__textarea:focus {
   width: 1.4rem;
 }
 
-.footer__key-set li {
+.key-indicator {
+  user-select: none;
   text-align: center;
   font-size: 1.8rem;
   font-weight: 600;
@@ -234,10 +234,7 @@ textarea.body__textarea:focus {
   width: 100%;
   border: 2px solid var(--border-color);
   opacity: 1;
-  transition-property: opacity, display;
-  transition-duration: 10s, 0s;
-  transition-delay: 0, 2s;
-  transition-timing-function: ease, linear;
+  transition: opacity, 0.2s linear;
 }
 
 .key-area__arrow--heading-button {
@@ -295,7 +292,6 @@ textarea.body__textarea:focus {
   box-sizing: border-box;
   border: 2px solid black;
   position: relative;
-  left: -2.8rem;
   font-size: 1.2rem;
 }
 
@@ -314,8 +310,12 @@ textarea.body__textarea:focus {
 }
 
 .hidden {
-  display: none;
   opacity: 0;
+  display: none;
+}
+
+.visible {
+  display: block;
 }
 
 .selected::after {
@@ -324,4 +324,8 @@ textarea.body__textarea:focus {
   width: 1.2rem;
   height: 1.2rem;
   border-color: var(--border-color);
+}
+
+.decrypter {
+  transform: rotateX(180deg);
 }

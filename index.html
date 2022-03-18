@@ -26,8 +26,8 @@
             <span class="header__algorithm-arrow" id="algorithmSelectArrow">
             </span></button>
           <ul class="header__algorithm-list hidden" id="algorithmPopupList">
-            <li>Caesar cipher</li>
-            <li>Vigenere Cipher</li>
+            <li value="caesar">Caesar cipher</li>
+            <li value="vigenere">Vigenere Cipher</li>
           </ul>
           <button class="header__button header__button--exchange" id="exchangeButton"><img
               src="assets/image/bothWayArrow.png"></button>
@@ -45,7 +45,7 @@
           <div class="footer__key-display">
             <span class="footer__key-display--english" id="keyCounterEnglish">key :</span>
             <ul class="footer__key-set" id="keyCounterList">
-              <li>0</li>
+              <li class="key-indicator">0</li>
             </ul>
             <button class="controller__button controller__button--reset" id="resetKeyButton">Reset Key</button>
           </div>
@@ -74,6 +74,7 @@
       </section>
     </div>
   </main>
+  <script src="./scripts/asstets.js"></script>
   <script src="./scripts/app.js"></script>
   <script src="./scripts/translator.js"></script>
   <script src="./scripts/event.js"></script>

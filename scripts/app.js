@@ -1,70 +1,12 @@
-const asciiCodeAssets = {
-  spaceCode: 32,
-  symbolStartCode: 33,
-  symbolLastCode: 47,
-  numberStartCode: 48,
-  numberLastCode: 57,
-  upperStartCode: 65,
-  upperLastCode: 90,
-  lowerStartCode: 97,
-  lowerLastCode: 122,
-  symbolLength: 15,
-  numberLength: 10,
-  alphabetLength: 26
-}
-
-const domAssets = {
-  algorithmSelector: document.querySelector('#sourceAlgorithmSelector'),
-  algorithmSelectorArrow: document.querySelector('#algorithmSelectArrow'),
-  algorithmPopup: document.querySelector('#algorithmPopupList'),
-  firstAlgorithm: document.querySelector('#algorithmPopupList').children[0],
-  secondAlgorithm: document.querySelector('#algorithmPopupList').children[1],
-  algorithmExchanger: document.querySelector('#exchangeButton'),
-  algorithmExchangerImage: document.querySelector('#exchangeButton').children[0],
-  algorithmDisplay: document.querySelector('#modifiedAlgorithmDisplay'),
-  sourceInput: document.querySelector('#textSource'),
-  lengthIndicator: document.querySelector('#sourceLength'),
-  keySelector: document.querySelector('#keySelectorButton'),
-  keySelectorImage: document.querySelector('#keySelectorButton').children[0],
-  sourceCopyButton: document.querySelector('#sourceCopyButton'),
-  sourceCopyButtonImage: document.querySelector('#sourceCopyButton').children[0],
-  beforeKeyIndicator: document.querySelector('#keyCounterEnglish'),
-  keyIndicatorList: document.querySelector('#keyCounterList'),
-  keyResetButton: document.querySelector('#resetKeyButton'),
-  modifiedOutput: document.querySelector('#modifiedTextArea'),
-  clearButton: document.querySelector('#clearTextButton'),
-  modifiedCopyButton: document.querySelector('#modifiedCopyButton'),
-  modifiedCopyButtonImg: document.querySelector('#modifiedCopyButton').children[0],
-  keyPopup: document.querySelector('#keyPopup'),
-  keyScroll: document.querySelector('#keyScroll')
-}
-
-const translatorAssets = {
-  algorithm: 'caesar',
-  headerToggle: false,
-  keytoggle: false,
-  isEncrypter: true
-
-}
-
 const keyHanddler = {
-  keyArray: [],
-  key: 0,
 
-  createAlphabetList(cb, isScroll = false) {
+  createAlphabetList(cb) {
     const list = [];
-    let scrollWeight = 0;
-    if(isScroll) {
-        for (let i = 24; i < 26; i += 1) {
-          const alphabet = document.createElement('li');
-          alphabet.innerHTML = cb(i);
-          list.push(alphabet);
-        }
-        scrollWeight = 2;
-    }
-  
-    for (let i = 0; i < 26 + scrollWeight; i += 1) {
+    for (let i = 0; i < asciiCodeAssets.alphabetLength * 2; i += 1) {
       const alphabet = document.createElement('li');
+      if(i === 0) {
+        alphabet.setAttribute('id', 'firstKey');
+      }
       alphabet.innerHTML = cb(i);
       list.push(alphabet);
     }
@@ -73,19 +15,17 @@ const keyHanddler = {
 }
 
 const scrollEvent = {
-  startX: 0,
-  currentX: 0,
+  ScrollLeft: 0,
+  clickCoordinate: 0,
   scrollValue: 0,
-  movement: 0,
   listWidth: 0,
-  isDragging: false,
 
   handleRender(scroll, isEncrypter = true) {
     const {lowerStartCode, lowerLastCode, alphabetLength} = asciiCodeAssets;
     let index = 0;
     if (isEncrypter === true) {
       scroll.childNodes.forEach((li) => {
-      let value = lowerStartCode + (keyHanddler.key + index - 2) % alphabetLength;
+      let value = lowerStartCode + (translatorAssets.key + index - 2) % alphabetLength;
       if (value < lowerStartCode) {
         value = lowerLastCode - (lowerStartCode - value);
       }
@@ -95,7 +35,7 @@ const scrollEvent = {
     }
     else {
       scroll.childNodes.forEach((li) => {
-        let value = lowerStartCode + (index - keyHanddler.key + 1) % alphabetLength;
+        let value = lowerStartCode + (index - translatorAssets.key + 1) % alphabetLength;
         if (value < lowerStartCode) {
           value = lowerLastCode - (lowerStartCode - value - 1);
         }
@@ -105,32 +45,41 @@ const scrollEvent = {
     }
   },
 
-  handleKey(direction, keyIndicator, isEncrypter = true) {
-    const {alphabetLength} = asciiCodeAssets
-    if (isEncrypter === true) {
-      keyHanddler.key += direction;
+  handleKey(key, keyIndicator) {
+    const logic = translatorAssets.algorithm;
+    translatorAssets.key = key;
+    if (logic === 'caesar') {
+      keyIndicator.children[0].innerText = translatorAssets.key;
     }
     else {
-        keyHanddler.key -= direction;
+      keyIndicator.innerHTML = '';
+      keyIndicator.innerText = translatorAssets.key;
+      keyIndicator.classList.add('key-indicator')
     }
-    keyHanddler.key %= alphabetLength;
-    if (keyHanddler.key < 0) {
-      keyHanddler.key = alphabetLength + keyHanddler.key % alphabetLength;
-    }
-    keyIndicator.innerText = keyHanddler.key;
-    algorithm.caesar()
+    algorithm[translatorAssets.algorithm]();
   },
 
   handlePosition(scroll) {
     scroll.childNodes.forEach((li) => {
-      li.style.transform = `translateX(${scrollEvent.scrollValue}px)`
+      li.style.transform = `translateX(-${this.scrollValue}px)`
     });
   },
 
-  handleClick() {
-    scrollEvent.startX = e.clientX;
-    scrollEvent.isDragging = true;
-    scrollEvent.listWidth = 21.6;
+  handleClick(scroll, e) {
+    const presentSelctcor = document.querySelector('#firstKey')
+    if(!presentSelctcor === false) {
+      presentSelctcor.removeAttribute('id')
+    }
+    const selector = e.target;
+    selector.setAttribute('id', 'firstKey');
+    this.ScrollLeft = scroll.offsetLeft;
+    this.clickCoordinate = e.target.offsetLeft;
+    this.scrollValue = this.clickCoordinate - this.ScrollLeft;
+    this.listWidth = scroll.children[0].offsetWidth;
+    
+    this.handlePosition(scroll);
+    this.tmpKey = Math.floor(this.scrollValue / this.listWidth % asciiCodeAssets.alphabetLength)
+    
   },
 
   handleDrag(e) {
@@ -161,8 +110,10 @@ const scrollEvent = {
 }
 
 const algorithm = {
-  caesar(source, modified, isEncrypter = true) {
+  caesar(isEncrypter = true) {
     const {spaceCode, symbolStartCode, symbolLastCode, numberStartCode, numberLastCode, upperStartCode, upperLastCode, lowerStartCode, lowerLastCode, symbolLength, numberLength, alphabetLength} = asciiCodeAssets;
+    const source = domAssets.sourceInput;
+    const modified = domAssets.modifiedOutput;
     const listOfAscii = [];
     const inputLength = source.value.length;
     const asciiLength = listOfAscii.length;
@@ -174,11 +125,11 @@ const algorithm = {
 
       else if (asciiCode <= symbolLastCode && asciiCode >= symbolStartCode) {
         if (isEncrypter === true) {
-          listOfAscii[i] = (asciiCode % symbolStartCode + keyHanddler.key) % numberOfAlpabet;
+          listOfAscii[i] = (asciiCode % symbolStartCode + translatorAssets.key) % symbolLength;
           listOfAscii[i] += symbolStartCode;
         }
         else {
-          listOfAscii[i] = (asciiCode % symbolStartCode % symbolLength - keyHanddler.key)
+          listOfAscii[i] = (asciiCode % symbolStartCode % symbolLength - translatorAssets.key)
 
           if (listOfAscii[i] < 0) {
             listOfAscii[i] = symbolLength + listOfAscii[i];
@@ -189,11 +140,11 @@ const algorithm = {
 
       else if (asciiCode <= numberLastCode && asciiCode >= numberStartCode) {
         if (isEncrypter === true) {
-          listOfAscii[i] = (asciiCode % numberStartCode + keyHanddler.key) % numberLength;
+          listOfAscii[i] = (asciiCode % numberStartCode + translatorAssets.key) % numberLength;
           listOfAscii[i] += numberStartCode;
         }
         else {
-          listOfAscii[i] = (asciiCode % numberStartCode % numberLength - keyHanddler.key)
+          listOfAscii[i] = (asciiCode % numberStartCode % numberLength - translatorAssets.key)
 
           if (listOfAscii[i] < 0) {
             listOfAscii[i] = numberLength + listOfAscii[i];
@@ -204,11 +155,11 @@ const algorithm = {
 
       else if (asciiCode <= upperLastCode && asciiCode >= upperStartCode) {
         if(isEncrypter === true) {
-          listOfAscii[i] = (asciiCode % upperStartCode + keyHanddler.key) % alphabetLength;
+          listOfAscii[i] = (asciiCode % upperStartCode + translatorAssets.key) % alphabetLength;
           listOfAscii[i] += upperStartCode;
         }
         else {
-          listOfAscii[i] = (asciiCode % upperStartCode % alphabetLength - keyHanddler.key)
+          listOfAscii[i] = (asciiCode % upperStartCode % alphabetLength - translatorAssets.key)
           if (listOfAscii[i] < 0) {
             listOfAscii[i] = alphabetLength + listOfAscii[i];
           }
@@ -218,12 +169,12 @@ const algorithm = {
 
       else if (asciiCode <= lowerLastCode && asciiCode >= lowerStartCode) {
         if (isEncrypter === true) {
-          listOfAscii[i] = (asciiCode % lowerStartCode + keyHanddler.key) % alphabetLength;
+          listOfAscii[i] = (asciiCode % lowerStartCode + translatorAssets.key) % alphabetLength;
           listOfAscii[i] += lowerStartCode;
         }
 
         else {
-          listOfAscii[i] = (asciiCode % lowerStartCode % alphabetLength - keyHanddler.key);
+          listOfAscii[i] = (asciiCode % lowerStartCode % alphabetLength - translatorAssets.key);
           if (listOfAscii[i] < 0) {
             listOfAscii[i] = alphabetLength + listOfAscii[i];
           }
@@ -250,46 +201,65 @@ const algorithm = {
   }
 }
 
+const handleDisplay = (...target) => {
+  target.forEach((t) => {
+    if (t.classList.contains('hidden')) {
+      t.classList.add('visible');
+    }
+    else {
+      t.classList.remove('visible')
+    }
+  })
+}
+
 const handleheaderPopup = (toggle) => {
   const {algorithmSelectorArrow, algorithmPopup} = domAssets;
-  if (toggle === true) {
-    algorithmSelectorArrow.classList.add('selected')
-    algorithmPopup.classList.remove('hidden')
+  if (toggle) {
+    algorithmSelectorArrow.classList.toggle('selected');
+    algorithmPopup.classList.toggle('hidden');
+    algorithmPopup.classList.toggle('visible');
   }
   else {
-    algorithmSelectorArrow.classList.remove('selected')
-    algorithmPopup.classList.add('hidden')  
+    algorithmSelectorArrow.classList.remove('selected');
+    algorithmPopup.classList.remove('visible');
+    algorithmPopup.classList.add('hidden') ;
   }
 }
 
 const handleAlgorithm = (target) => {
   const presentAlgorithm = translatorAssets.algorithm;
-  if (target === domAssets.firstAlgorithm) {
-    translatorAssets.algorithm = 'caesar';
-  }
-  else if (target === domAssets.secondAlgorithm) {
-    translatorAssets.algorithm = 'vigenere'
-  }
-  if (presentAlgorithm === translatorAssets.algorithm) return;
-  else {
-    console.log('작업해야됨. 알고리즘 변경')
-  }
+  const selectedAlgorithm = target.getAttribute('value');
+  if (presentAlgorithm === selectedAlgorithm)  return;
+  translatorAssets.algorithm = selectedAlgorithm;
+  translatorAssets.key = 0;
+  translatorAssets.keyArray = [];
 }
 
-const handleEncrypter = (isEncrypter) => {
-  if (isEncrypter === true) {
-    console.log('복호화로 변경 버튼 작업 필요');
+const handleEncrypter = (isEncrypter, source, modified) => {
+  const buffer = source.value;
+  source.value = modified.innerHTML;
+  modified.innerText = buffer;
+  if (isEncrypter) {
+    domAssets.encrypterExchangerImage.classList.add('decrypter')
     translatorAssets.isEncrypter = false;
+    algorithm[translatorAssets.algorithm]()
   }
   else {
-    console.log('암호화로 변경 버튼 작업 필요')
+    console.log('암호화로 변경 버튼 작업 필요');
+    domAssets.encrypterExchangerImage.classList.remove('decrypter')
     translatorAssets.isEncrypter = true;
+    algorithm[translatorAssets.algorithm]()
   }
 }
 
-const handleKeyWrapper = (toggle) => {
-  if (toggle === true) {
-    domAssets.keyPopup.classList.remove('hidden');
+const handleKeyWrapper = (toggle, isButton) => {
+  if (toggle) {
+    if(isButton) {
+      domAssets.keyPopup.classList.toggle('hidden');
+    }
+    else {
+      domAssets.keyPopup.classList.remove('hidden');
+    }
   }
   else {
     domAssets.keyPopup.classList.add('hidden')
@@ -305,82 +275,16 @@ const handleCopy = (target) => {
   }
 }
 
-const handleKeyReset = () => {
-  keyHanddler.key = 0;
-  algorithm.caesar(domAssets.sourceInput, domAssets.modifiedOutput, translatorAssets.isEncrypter)
+const handleKeyReset = (logic) => {
+  scrollEvent.handleKey(0, )
+  algorithm[logic](domAssets.sourceInput, domAssets.modifiedOutput, translatorAssets.isEncrypter)
 }
 
+const removeText = () => {
+  domAssets.sourceInput.value = '';
+  domAssets.modifiedOutput.innerText = '';
+}
 
-const handleClick = (e) => {
-  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, algorithmExchanger, algorithmExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImg, clearButton} = domAssets;
-  const target = e.target
-  console.log(target)
-  switch (target) {
-    case algorithmSelector:
-      translatorAssets.headerToggle = true;
-      translatorAssets.keytoggle = false;
-      break;
-
-    case algorithmSelectorArrow:
-      translatorAssets.headerToggle = true;
-      translatorAssets.keytoggle = false;
-      break;
-
-    case firstAlgorithm:
-      handleAlgorithm(target);
-      break;
-
-    case secondAlgorithm:
-      handleAlgorithm(target);
-      break;
-    
-    case algorithmExchanger:
-      handleEncrypter(translatorAssets.isEncrypter);
-      break;
-    
-    case algorithmExchangerImage:
-      handleEncrypter(translatorAssets.isEncrypter);
-      break;
-      
-    case keySelector:
-      translatorAssets.headerToggle = false;
-      translatorAssets.keytoggle = true;
-      break;
-  
-    case keySelectorImage:
-      translatorAssets.headerToggle = false;
-      translatorAssets.keytoggle = true;
-      break;
-
-    case sourceCopyButton:
-      handleCopy(target);
-      break;
-
-    case sourceCopyButtonImage:
-      handleCopy(target);
-      break;
-
-    case keyResetButton:
-      handleKeyReset();
-      break;
-
-    case modifiedCopyButton:
-      handleCopy(target);
-      break;
-
-    case modifiedCopyButtonImg:    
-      handleCopy(target);
-      break;
-
-    case clearButton:
-      removeText();
-      break;
-
-    default:
-      return;
-  }
-  handleKeyWrapper(translatorAssets.keytoggle);
-  handleheaderPopup(translatorAssets.headerToggle);
-  translatorAssets.headerToggle = false;
-  translatorAssets.keytoggle = false;
+const selectKey = () => {
+  scrollEvent.handleKey(scrollEvent.tmpKey, domAssets.keyIndicatorList)
 }
