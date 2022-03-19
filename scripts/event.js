@@ -86,7 +86,7 @@ const handleClick = (e) => {
   }
   if (target.parentNode === keyScroll) {
     translatorAssets.keytoggle = true;
-    scrollEvent.handleClick(domAssets.keyScroll, e)
+    scrollEvent.handleClick(e)
   }
   handleheaderPopup(translatorAssets.headerToggle);
   handleKeyWrapper(translatorAssets.keytoggle, translatorAssets.isButton);
@@ -95,7 +95,7 @@ const handleClick = (e) => {
 const handleOver = (e) => {
   const target = e.target;
   const {algorithmSelector, algorithmSelectorArrow, encrypterExchanger, clearButton, keySelector, sourceCopyButton, keyResetButton, encrypterExchangerImage, keySelectorImage, sourceCopyButtonImage, modifiedCopyButtonImage} = domAssets;
-
+  const keyDefine = document.querySelector('#firstKey');
   switch (target) {
     case algorithmSelector:
       target.classList.add('mouse-over');
@@ -145,6 +145,10 @@ const handleOver = (e) => {
       target.parentNode.classList.add('mouse-over--bg');
       break;
 
+    case keyDefine:
+      target.classList.add('mouse-over--bg');
+      break;
+
     default:
       return;
   }
@@ -153,7 +157,7 @@ const handleOver = (e) => {
 const handleOut = (e) => {
   const target = e.target;
   const {algorithmSelector, algorithmSelectorArrow, encrypterExchanger, clearButton, keySelector, sourceCopyButton, keyResetButton, encrypterExchangerImage, keySelectorImage, sourceCopyButtonImage, modifiedCopyButtonImage} = domAssets;
-
+  const keyDefine = document.querySelector('#firstKey');
   switch (target) {
     case algorithmSelector:
       target.classList.remove('mouse-over');
@@ -202,6 +206,10 @@ const handleOut = (e) => {
     case modifiedCopyButtonImage:
       target.parentNode.classList.remove('mouse-over--bg');
       break;
+
+      case keyDefine:
+        target.classList.remove('mouse-over--bg');
+        break;
 
     default:
       return;

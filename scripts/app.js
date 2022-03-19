@@ -33,7 +33,8 @@ const scrollEvent = {
     algorithm[translatorAssets.algorithm]();
   },
 
-  handlePosition(scroll) {
+  handlePosition() {
+    const scroll = domAssets.keyScroll
     scroll.childNodes.forEach((li) => {
       li.style.transform = `translateX(-${this.scrollValue}px)`
       
@@ -49,8 +50,9 @@ const scrollEvent = {
     });
   },
 
-  handleClick(scroll, e) {
+  handleClick(e) {
     const presentSelctcor = document.querySelector('#firstKey')
+    const scroll = domAssets.keyScroll
     if(!presentSelctcor === false) {
       presentSelctcor.removeAttribute('id')
     }
@@ -59,10 +61,13 @@ const scrollEvent = {
     this.scrollValue = (this.clickCoordinate - this.scrollLeft);
     this.listWidth = scroll.children[0].offsetWidth;
     
-    this.handlePosition(scroll);
+    this.handlePosition();
     this.tmpKey = Math.floor(this.scrollValue / this.listWidth % asciiCodeAssets.alphabetLength);
     for (let i = 0; i <= asciiCodeAssets.alphabetLength; i++) {
-      if (this.scrollLeft + this.listWidth * this.tmpKey <= scroll.children[i].offsetLeft && this.scrollLeft + this.listWidth * (this.tmpKey + 0.5) >= scroll.children[i].offsetLeft) {
+      if (!this.tmpKey) {
+        scroll.children[26].setAttribute('id', 'firstKey');
+      }
+      else if (this.scrollLeft + this.listWidth * this.tmpKey <= scroll.children[i].offsetLeft && this.scrollLeft + this.listWidth * (this.tmpKey + 0.5) >= scroll.children[i].offsetLeft) {
         scroll.children[i].setAttribute('id', 'firstKey');
       }
     }
