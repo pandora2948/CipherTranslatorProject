@@ -92,13 +92,136 @@ const handleClick = (e) => {
   handleKeyWrapper(translatorAssets.keytoggle, translatorAssets.isButton);
 }
 
-document.addEventListener('click', handleClick)
+const handleOver = (e) => {
+  const target = e.target;
+  const {algorithmSelector, algorithmSelectorArrow, encrypterExchanger, clearButton, keySelector, sourceCopyButton, keyResetButton, encrypterExchangerImage, keySelectorImage, sourceCopyButtonImage, modifiedCopyButtonImage} = domAssets;
+
+  switch (target) {
+    case algorithmSelector:
+      target.classList.add('mouse-over');
+      break;
+
+    case algorithmSelectorArrow:
+      algorithmSelector.classList.add('mouse-over');
+      break;
+      
+    case encrypterExchanger:
+      target.classList.add('mouse-over--bg');
+      break;
+
+    case encrypterExchangerImage:
+      target.parentNode.classList.add('mouse-over--bg');
+      break;
+
+    case clearButton:
+      target.classList.add('mouse-over');;
+      break;
+
+    case keySelector:
+      target.classList.add('mouse-over--bg');
+      break;
+
+    case keySelectorImage:
+      target.parentNode.classList.add('mouse-over--bg');
+      break;
+
+    case sourceCopyButton:
+      target.classList.add('mouse-over--bg');
+      break;
+
+    case sourceCopyButtonImage:
+      target.parentNode.classList.add('mouse-over--bg');
+      break;
+
+    case keyResetButton:
+      target.classList.add('mouse-over--bg');
+      break;
+
+    case modifiedCopyButton:
+      target.classList.add('mouse-over--bg');
+      break;
+
+    case modifiedCopyButtonImage:
+      target.parentNode.classList.add('mouse-over--bg');
+      break;
+
+    default:
+      return;
+  }
+}
+
+const handleOut = (e) => {
+  const target = e.target;
+  const {algorithmSelector, algorithmSelectorArrow, encrypterExchanger, clearButton, keySelector, sourceCopyButton, keyResetButton, encrypterExchangerImage, keySelectorImage, sourceCopyButtonImage, modifiedCopyButtonImage} = domAssets;
+
+  switch (target) {
+    case algorithmSelector:
+      target.classList.remove('mouse-over');
+      break;
+
+    case algorithmSelectorArrow:
+      algorithmSelector.classList.remove('mouse-over');
+      break;
+      
+    case encrypterExchanger:
+      target.classList.remove('mouse-over--bg');
+      break;
+
+    case encrypterExchangerImage:
+      target.parentNode.classList.remove('mouse-over--bg');
+      break;
+
+    case clearButton:
+      target.classList.remove('mouse-over');;
+      break;
+
+    case keySelector:
+      target.classList.remove('mouse-over--bg');
+      break;
+
+    case keySelectorImage:
+      target.parentNode.classList.remove('mouse-over--bg');
+      break;
+
+    case sourceCopyButton:
+      target.classList.remove('mouse-over--bg');
+      break;
+
+    case sourceCopyButtonImage:
+      target.parentNode.classList.remove('mouse-over--bg');
+      break;
+
+    case keyResetButton:
+      target.classList.remove('mouse-over--bg');
+      break;
+
+    case modifiedCopyButton:
+      target.classList.remove('mouse-over--bg');
+      break;
+
+    case modifiedCopyButtonImage:
+      target.parentNode.classList.remove('mouse-over--bg');
+      break;
+
+    default:
+      return;
+  }
+}
+
+document.addEventListener('click', handleClick);
+document.addEventListener('mouseover', handleOver);
+document.addEventListener('mouseout', handleOut);
+
 
 domAssets.sourceInput.addEventListener('focus', () => {
+  const soruceTranslator = document.querySelector('#sourceTranslator');
+  soruceTranslator.classList.add('focus')
   this.translateInterval = setInterval(() => {
     algorithm[translatorAssets.algorithm]()
   }, 100);
 })
 domAssets.sourceInput.addEventListener('blur', () => {
+  const soruceTranslator = document.querySelector('#sourceTranslator');
+  soruceTranslator.classList.remove('focus');
   clearInterval(translateInterval);
 })

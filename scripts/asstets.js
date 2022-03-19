@@ -34,7 +34,7 @@ const domAssets = {
   modifiedOutput: document.querySelector('#modifiedTextArea'),
   clearButton: document.querySelector('#clearTextButton'),
   modifiedCopyButton: document.querySelector('#modifiedCopyButton'),
-  modifiedCopyButtonImg: document.querySelector('#modifiedCopyButton').children[0],
+  modifiedCopyButtonImage: document.querySelector('#modifiedCopyButton').children[0],
   keyPopup: document.querySelector('#keyPopup'),
   keyScroll: document.querySelector('#keyScroll')
 }

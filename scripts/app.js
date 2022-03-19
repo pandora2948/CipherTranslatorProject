@@ -2,12 +2,13 @@ const keyHanddler = {
 
   createAlphabetList(cb) {
     const list = [];
-    for (let i = 0; i < asciiCodeAssets.alphabetLength * 2; i += 1) {
+    for (let i = 0; i < asciiCodeAssets.alphabetLength * 3; i += 1) {
       const alphabet = document.createElement('li');
       if(i === 0) {
         alphabet.setAttribute('id', 'firstKey');
       }
       alphabet.innerHTML = cb(i);
+      alphabet.classList.add('scroll');
       list.push(alphabet);
     }
     return list;
@@ -35,6 +36,16 @@ const scrollEvent = {
   handlePosition(scroll) {
     scroll.childNodes.forEach((li) => {
       li.style.transform = `translateX(-${this.scrollValue}px)`
+      
+      if (this.scrollValue > scroll.offsetWidth) {
+        setTimeout(() => {
+          li.classList.remove('scroll');
+          li.style.transform = `translateX(-${this.scrollValue % scroll.offsetWidth}px)`
+        }, 250)
+        setTimeout(() => {
+          li.classList.add('scroll');
+        }, 260)
+      }
     });
   },
 
@@ -45,7 +56,7 @@ const scrollEvent = {
     }
     this.scrollLeft = scroll.offsetLeft;
     this.clickCoordinate = e.target.offsetLeft;
-    this.scrollValue = (this.clickCoordinate - this.scrollLeft) % scroll.offsetWidth;
+    this.scrollValue = (this.clickCoordinate - this.scrollLeft);
     this.listWidth = scroll.children[0].offsetWidth;
     
     this.handlePosition(scroll);

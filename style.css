@@ -1,5 +1,6 @@
 :root {
   --main-color: #67b3e4;
+  --adjust-main-color: #67b2e479;
   --text-place-holder-color: #7d7d7d;
   --border-color: #dddddd;
   --arrow-color: #7e7e7e;
@@ -69,6 +70,7 @@ main {
   border: 2px solid var(--border-color);
   height: 80%;
   min-height: 20rem;
+  transition: outline 0.1s;
 }
 
 .translator__header {
@@ -129,10 +131,14 @@ main {
   transition: all 0.3s ease-in;
 }
 
+.header__button--exchange {
+  transition: background 0.15s;
+}
+
 .header__button--exchange img {
   width: 2rem;
   padding: 1rem;
-  transition: transform ease 0.5s;
+  transition: transform ease 0.2s;
 }
 
 .translator__body {
@@ -168,6 +174,7 @@ textarea.body__textarea:focus {
   margin: 1rem 2rem 1rem 0;
   font-size: 1.5rem;
   color: var(--text-place-holder-color);
+  transition: color 0.15s;
 }
 
 .translator__footer {
@@ -188,6 +195,7 @@ textarea.body__textarea:focus {
 .controller__button {
   border-right: 1px solid var(--border-color);
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .controller__button img {
@@ -309,9 +317,12 @@ textarea.body__textarea:focus {
   user-select: none;
 }
 
-.mouse-on {
-  color: var(--main-color);
-  cursor: pointer;
+.mouse-over {
+  color: var(--adjust-main-color);
+}
+
+.mouse-over--bg {
+  background-color: var(--adjust-main-color);
 }
 
 .hidden {
@@ -333,4 +344,13 @@ textarea.body__textarea:focus {
 
 .decrypter {
   transform: rotateX(180deg);
+}
+
+.scroll {
+  transition: transform 0.3s ease;
+}
+
+.focus {
+  border: 2px solid var(--adjust-main-color);
+  outline: 2px solid var(--adjust-main-color);
 }
