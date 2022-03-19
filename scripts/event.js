@@ -52,7 +52,9 @@ const handleClick = (e) => {
 
     case keyResetButton:
       translatorAssets.keyArray = [0];
+      scrollEvent.scrollValue = 0;
       scrollEvent.handleKey();
+      scrollEvent.handlePosition()
       break;
 
     case modifiedCopyButton:
