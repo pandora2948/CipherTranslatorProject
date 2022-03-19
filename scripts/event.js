@@ -1,5 +1,5 @@
 const handleClick = (e) => {
-  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImg, clearButton, keyPopup, keyScroll, sourceInput, modifiedOutput} = domAssets;
+  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, sourceInput, modifiedOutput} = domAssets;
   const target = e.target;
   const firstKey = document.querySelector('#firstKey');
   translatorAssets.headerToggle = false;
@@ -59,7 +59,7 @@ const handleClick = (e) => {
       handleCopy(target);
       break;
 
-    case modifiedCopyButtonImg:    
+    case modifiedCopyButtonImage:
       handleCopy(target);
       break;
 
