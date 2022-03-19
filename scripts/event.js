@@ -51,7 +51,8 @@ const handleClick = (e) => {
       break;
 
     case keyResetButton:
-      handleKeyReset(translatorAssets.algorithm);
+      translatorAssets.keyArray = [0];
+      scrollEvent.handleKey();
       break;
 
     case modifiedCopyButton:

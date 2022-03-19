@@ -93,11 +93,12 @@ main {
   border: 2px solid var(--border-color);
   background-color: white;
   opacity: 1;
+  pointer-events: auto;
   transition: opacity 0.2s 0s linear;
 }
 
 .header__algorithm-list li {
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 2.5rem 0.5rem 1.5rem;
   cursor: pointer;
 }
 
@@ -144,6 +145,7 @@ textarea.body__textarea {
   border: none;
   resize: none;
   overflow: hidden;
+  font-family: "Roboto", sans-serif;
 }
 
 textarea.body__textarea:focus {
@@ -208,8 +210,8 @@ textarea.body__textarea:focus {
 }
 
 .footer__key-set {
-  margin: 0 2rem 0 0;
-  width: 1.4rem;
+  margin: 0 1rem 0 0;
+  display: flex;
 }
 
 .key-indicator {
@@ -217,6 +219,9 @@ textarea.body__textarea:focus {
   text-align: center;
   font-size: 1.8rem;
   font-weight: 600;
+  padding: 0.1rem;
+  width: 2.2rem;
+  border-left: 1px solid black;
 }
 
 .controller__button--reset {
@@ -311,7 +316,7 @@ textarea.body__textarea:focus {
 
 .hidden {
   opacity: 0;
-  display: none;
+  pointer-events: none;
 }
 
 .visible {

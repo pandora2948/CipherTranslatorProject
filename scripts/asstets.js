@@ -40,8 +40,7 @@ const domAssets = {
 }
 
 const translatorAssets = {
-  keyArray: [],
-  key: 0,
+  keyArray: [0],
   algorithm: 'caesar',
   headerToggle: false,
   keytoggle: false,
