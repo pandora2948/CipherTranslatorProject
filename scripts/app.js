@@ -82,11 +82,12 @@ const scrollEvent = {
 const algorithm = {
   caesar() {
     const {spaceCode, symbolStartCode, symbolLastCode, numberStartCode, numberLastCode, upperStartCode, upperLastCode, lowerStartCode, lowerLastCode, symbolLength, numberLength, alphabetLength} = asciiCodeAssets;
-    const {sourceInput, modifiedOutput} = domAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     const inputLength = sourceInput.value.length;
     const asciiLength = listOfAscii.length;
+    lengthIndicator.innerText = inputLength;
     for (let i = 0; i < inputLength; i += 1) {
       const asciiCode = sourceInput.value.charCodeAt(i);
       const key = translatorAssets.keyArray[0];
@@ -173,12 +174,12 @@ const algorithm = {
 
   vigenere() {
     const {upperStartCode, upperLastCode, lowerStartCode, lowerLastCode, alphabetLength} = asciiCodeAssets;
-    const {sourceInput, modifiedOutput} = domAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     const inputLength = sourceInput.value.length;
     const asciiLength = listOfAscii.length;
-
+    lengthIndicator.innerText = inputLength;
     for (let i = 0; i < inputLength; i += 1) {
       const asciiCode = sourceInput.value.charCodeAt(i);
       const key = translatorAssets.keyArray[i % translatorAssets.keyArray.length];
@@ -234,16 +235,18 @@ const algorithm = {
   },
 
   oneTimePad() {
-    const {sourceInput, modifiedOutput} = domAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     if (isEncrypter) {
       const inputLength = sourceInput.value.length;
+      lengthIndicator.innerText = inputLength;
       for (let i = 0; i < inputLength; i += 1) {
         const asciiCode = sourceInput.value.charCodeAt(i);
         const key = translatorAssets.keyArray[i];
         listOfAscii[i] = (asciiCode ^ key).toString(2);
         }
+
         const tag = listOfAscii
         .map((curr) => {
           return `${curr.padStart(8, '0')} `;
@@ -255,6 +258,7 @@ const algorithm = {
       }
     else{
       const inputLength = sourceInput.value.split(' ').length;
+      lengthIndicator.innerText = inputLength;
       for(let i = 0; i < inputLength; i += 1) {
         const asciiCode = parseInt(sourceInput.value.split(' ')[i], 2);
         const key = translatorAssets.keyArray[i];
