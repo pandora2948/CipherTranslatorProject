@@ -375,7 +375,7 @@ const generatePadKeys = () => {
     const inputLength = domAssets.sourceInput.value.length;
     translatorAssets.keyArray = [];
     for(let i = 0; i < inputLength; i++) {
-      translatorAssets.keyArray.push(Math.ceil(Math.random() * 256));
+      translatorAssets.keyArray.push(Math.floor(Math.random() * 256));
     }
     domAssets.keyInput.value = translatorAssets.keyArray;
   }
