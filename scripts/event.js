@@ -235,7 +235,7 @@ domAssets.sourceInput.addEventListener('keydown', (e) => {
   switch (e.keyCode) {
     case 13:
       e.preventDefault()
-      generatePadKeys();
+      algorithm.oneTimePad()
       break;
 
     default:

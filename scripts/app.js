@@ -23,13 +23,12 @@ const scrollEvent = {
   tmpKey:0,
 
   handleKey() {
-    generatePadKeys();
-    const keyIndicator = domAssets.keyIndicatorList;
-    const {keyArray} = translatorAssets;
-    if (translatorAssets.algorithm === 'oneTimePad') {
-      
+    if(translatorAssets.algorithm === 'oneTimePad') {
+      algorithm.oneTimePad();
     }
     else {
+      const keyIndicator = domAssets.keyIndicatorList;
+      const {keyArray} = translatorAssets;
       keyIndicator.innerHTML = '';
       keyArray.forEach((k) => {
         keyIndicator.innerHTML += `<li class="key-indicator">${k}</li>`
@@ -235,18 +234,21 @@ const algorithm = {
   },
 
   oneTimePad() {
+    if(translatorAssets.algorithm !== 'oneTimePad') return;
     const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     if (isEncrypter) {
-      const inputLength = sourceInput.value.length;
-      lengthIndicator.innerText = inputLength;
+      const inputLength = domAssets.sourceInput.value.length;
+      translatorAssets.keyArray = [];
       for (let i = 0; i < inputLength; i += 1) {
+        translatorAssets.keyArray.push(Math.floor(Math.random() * 256));
         const asciiCode = sourceInput.value.charCodeAt(i);
         const key = translatorAssets.keyArray[i];
         listOfAscii[i] = (asciiCode ^ key).toString(2);
         }
-
+        domAssets.keyInput.value = translatorAssets.keyArray;
+        lengthIndicator.innerText = inputLength;
         const tag = listOfAscii
         .map((curr) => {
           return `${curr.padStart(8, '0')} `;
@@ -258,6 +260,10 @@ const algorithm = {
       }
     else{
       const inputLength = sourceInput.value.split(' ').length;
+      translatorAssets.keyArray = [];
+      for (let i = 0; i < domAssets.keyInput.value.split(',').length; i += 1){
+        translatorAssets.keyArray.push(domAssets.keyInput.value.split(',')[i]);
+      }
       lengthIndicator.innerText = inputLength;
       for(let i = 0; i < inputLength; i += 1) {
         const asciiCode = parseInt(sourceInput.value.split(' ')[i], 2);
@@ -367,25 +373,6 @@ const selectKey = () => {
     translatorAssets.keyArray.push(scrollEvent.tmpKey);
   }
   scrollEvent.handleKey()
-}
-
-const generatePadKeys = () => {
-  if(translatorAssets.algorithm !== 'oneTimePad') return;
-  if(translatorAssets.isEncrypter) {
-    const inputLength = domAssets.sourceInput.value.length;
-    translatorAssets.keyArray = [];
-    for(let i = 0; i < inputLength; i++) {
-      translatorAssets.keyArray.push(Math.floor(Math.random() * 256));
-    }
-    domAssets.keyInput.value = translatorAssets.keyArray;
-  }
-  else {
-    translatorAssets.keyArray = [];
-    for (let i = 0; i < domAssets.keyInput.value.split(',').length; i += 1){
-      translatorAssets.keyArray.push(domAssets.keyInput.value.split(',')[i]);
-    }
-  }
-  algorithm.oneTimePad();
 }
 
 handleKeyRole = () => {
