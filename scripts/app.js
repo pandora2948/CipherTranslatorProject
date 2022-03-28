@@ -354,7 +354,17 @@ const handleCopy = (target) => {
     navigator.clipboard.writeText(domAssets.sourceInput.value);
   }
   else {
-    navigator.clipboard.writeText(domAssets.modifiedOutput.innerHTML);
+    if(translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter) {
+      navigator.clipboard
+      .writeText(`
+==============================TextArea=============================
+${domAssets.modifiedOutput.innerHTML}
+==============================KeyArea=============================
+${translatorAssets.keyArray}`);
+    }
+    else {
+      navigator.clipboard.writeText(domAssets.modifiedOutput.innerHTML)
+    }
   }
 }
 
@@ -388,5 +398,4 @@ handleKeyRole = () => {
     keyInput.classList.add('hidden');
     footerKey.classList.remove('hidden');
   }
-  
 }
