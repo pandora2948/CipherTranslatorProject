@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptography Traslator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./scripts/asstets.js"></script>
+  <script defer src="./scripts/app.js"></script>
+  <script defer src="./scripts/translator.js"></script>
+  <script defer src="./scripts/event.js"></script>
+</head>
+
+<body>
+  <header class="doc-header">
+    <a href="https://pandora2948.github.io/cipherTranslator-v4-playfair">
+      <img class="header__logo" src="./assets/image/lockImage.png">
+      <h1>Cryptography translator</h1>
+    </a>
+  </header>
+  <main>
+    <div class="translator-wrapper">
+      <section class="translator" id="sourceTranslator">
+        <article class="translator__header">
+          <button class="header__button header__button--algorithm" id="sourceAlgorithmSelector">Caesar Cipher
+            <span class="header__algorithm-arrow" id="algorithmSelectArrow">
+            </span></button>
+          <ul class="header__algorithm-list hidden" id="algorithmPopupList">
+            <li value="caesar">Caesar cipher</li>
+            <li value="vigenere">Vigenere Cipher</li>
+            <li value="oneTimePad">OTP</li>
+            <li value="playfair">Playfair</li>
+          </ul>
+          <button class="header__button header__button--exchange" id="exchangeButton"><img
+              src="assets/image/bothWayArrow.png"></button>
+        </article>
+        <div class="translator__body">
+          <textarea class="body__textarea" id="textSource"
+            placeholder="Please Write Text That You Translate"></textarea>
+          <div class="body__tail">
+            <table class="tail__element--table" id="keyTable"></table>
+            <p class="tail__element tail__element--length" id="sourceLength">0</p>
+          </div>
+        </div>
+        <div class="translator__footer">
+          <div class="footer__controller">
+            <button class="controller__button" id="keySelectorButton"><img src="./assets/image/key.png"></button>
+            <button class="controller__button" id="sourceCopyButton"><img src="./assets/image/copy.png"></button>
+          </div>
+          <div class="footer__key-display" id="footerKeyDisplay">
+            <span class="footer__key-display--english" id="keyCounterEnglish">Key</span>
+            <ul class="footer__key-set" id="keyCounterList">
+              <li class="key-indicator">0</li>
+            </ul>
+            <button class="controller__button controller__button--reset" id="resetKeyButton">Reset Key</button>
+          </div>
+        </div>
+      </section>
+      <div class="translator__key-area hidden" id="keyPopup">
+        <span class="key-area__arrow--heading-button"></span>
+        <span class="key-area__arrow--heading-key"></span>
+        <ul class="key-area__list" id="keyScroll"></ul>
+        <input type="text" class="key-area__input hidden" id="keyInput">
+      </div>
+    </div>
+    <div class="translator-wrapper">
+      <section class="translator">
+        <article class="translator__header">
+          <span class="header__algorithm-display" id="modifiedAlgorithmDisplay">Caesar Cipher</span>
+        </article>
+        <div class="translator__body">
+          <p class="body__textarea" id="modifiedTextArea"></p>
+          <button class="tail__element tail__element--clear-button" id="clearTextButton">Clear</button>
+        </div>
+        <div class="translator__footer">
+          <div class="footer__controller">
+            <button class="controller__button" id="modifiedCopyButton"><img src="./assets/image/copy.png"></button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>
