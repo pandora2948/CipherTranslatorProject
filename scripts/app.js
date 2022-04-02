@@ -289,16 +289,20 @@ const algorithm = {
     const listOfAscii = [];
     lengthIndicator.innerText = sourceInput.value.length;
 
-    for (const char of sourceInput.value) {
-      listOfAscii.push(char.charCodeAt());
+    for (let i = 0; i < sourceInput.value.length; i++) {
+      listOfAscii.push(sourceInput.value.charCodeAt(i));
+      if (sourceInput.value.charCodeAt(i) === sourceInput.value.charCodeAt(i + 1) && i % 2 === 0) {
+        listOfAscii.push(126);
+      }
     }
+
     if (listOfAscii.length % 2 !== 0 && isEncrypter) {
       listOfAscii.push(Math.floor(Math.random() * 96) + 32);
       if (listOfAscii[listOfAscii.length - 1] === 127) {
         listOfAscii[listOfAscii.length - 1] = 128;
       }
     }
-    for (let i = 0; i < listOfAscii.length; i += 1) {
+    for (let i = 0; i < listOfAscii.length; i += 1) {      
       listOfAscii.splice(i,2, [listOfAscii[i], listOfAscii[i+1]]);
       const currArr = listOfAscii[i];
       const flatKey = keyArray.flat();
@@ -509,4 +513,5 @@ const handleTable = () => {
     keyTable.append(row);
   }
   translatorAssets.keyArray = keyArray;
+  console.log(keyArray)
 }
