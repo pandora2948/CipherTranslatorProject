@@ -291,7 +291,7 @@ const algorithm = {
 
     for (let i = 0; i < sourceInput.value.length; i++) {
       listOfAscii.push(sourceInput.value.charCodeAt(i));
-      if (sourceInput.value.charCodeAt(i) === sourceInput.value.charCodeAt(i + 1) && i % 2 === 0) {
+      if (sourceInput.value.charCodeAt(i) === sourceInput.value.charCodeAt(i + 1) && listOfAscii.length % 2 === 1) {
         listOfAscii.push(126);
       }
     }
