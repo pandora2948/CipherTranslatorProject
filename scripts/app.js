@@ -302,6 +302,7 @@ const algorithm = {
         listOfAscii[listOfAscii.length - 1] = 128;
       }
     }
+
     for (let i = 0; i < listOfAscii.length; i += 1) {      
       listOfAscii.splice(i,2, [listOfAscii[i], listOfAscii[i+1]]);
       const currArr = listOfAscii[i];
@@ -390,7 +391,7 @@ const handleEncrypter = () => {
   const input = domAssets.sourceInput;
   const output = domAssets.modifiedOutput;
   const buffer = input.value;
-  input.value = output.innerHTML;
+  input.value = output.innerText;
   output.innerText = buffer;
   if (translatorAssets.isEncrypter) {
     domAssets.encrypterExchangerImage.classList.add('decrypter');
@@ -422,6 +423,7 @@ const handleCopy = (target) => {
   if (target === domAssets.sourceCopyButton || target === domAssets.sourceCopyButtonImage) {
     navigator.clipboard.writeText(domAssets.sourceInput.value);
   }
+
   else if (translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter) {
       navigator.clipboard
       .writeText(`
@@ -446,10 +448,10 @@ const selectKey = () => {
     translatorAssets.keyArray[0] = scrollEvent.tmpKey;
   }
   else {
-    domAssets.beforeKeyIndicator.innerText = 'Keys'
+    domAssets.beforeKeyIndicator.innerText = 'Keys';
     translatorAssets.keyArray.push(scrollEvent.tmpKey);
   }
-  scrollEvent.handleKey()
+  scrollEvent.handleKey();
 }
 
 const handleKeyRole = () => {
@@ -491,27 +493,35 @@ const handleTable = () => {
       }
 
       if (keyCount >= userKey.length) {
-        while (userKey.includes(code) || code === 127) {
+        while (userKey.includes(code)) {
           code += 1;
         }
-        keyRow.push(code);
-        const column = document.createElement('td');
-        column.innerHTML = `&#${code};`;
-        row.append(column);
-        code += 1;
+        if (code === 127) {
+          keyRow.push(8364);
+          const column = document.createElement('td');
+          column.innerHTML = `&#${8364};`;
+          row.append(column);
+          code += 1;
+        }
+        else {
+          keyRow.push(code);
+          const column = document.createElement('td');
+          column.innerHTML = `&#${code};`;
+          row.append(column);
+          code += 1;
+        }
       }
-      
-      else {
+      else if (userKey[keyCount] < 8500) {
         keyRow.push(userKey[keyCount]);
         const column = document.createElement('td');
         column.innerHTML = `&#${userKey[keyCount]};`;
         row.append(column);
         keyCount += 1;
       }
+      else return;
     }
     keyArray.push(keyRow);
     keyTable.append(row);
   }
   translatorAssets.keyArray = keyArray;
-  console.log(keyArray)
 }
