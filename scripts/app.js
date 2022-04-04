@@ -57,8 +57,8 @@ const scrollEvent = {
   handleClick(e) {
     const presentSelctcor = document.querySelector('#firstKey')
     const scroll = domAssets.keyScroll
-    if(!presentSelctcor === false) {
-      presentSelctcor.removeAttribute('id')
+    if(presentSelctcor) {
+      presentSelctcor.removeAttribute('id');
     }
     this.scrollLeft = scroll.offsetLeft;
     this.clickCoordinate = e.target.offsetLeft;
@@ -295,12 +295,15 @@ const algorithm = {
         listOfAscii.push(126);
       }
     }
-
+    // 암호화일 경우 
     if (listOfAscii.length % 2 !== 0 && isEncrypter) {
       listOfAscii.push(Math.floor(Math.random() * 96) + 32);
       if (listOfAscii[listOfAscii.length - 1] === 127) {
         listOfAscii[listOfAscii.length - 1] = 128;
       }
+    }
+    else if (listOfAscii.length % 2 !== 0 && !isEncrypter) {
+      alert("Please type Correct Cipher");
     }
 
     for (let i = 0; i < listOfAscii.length; i += 1) {      
