@@ -32,6 +32,7 @@
           <ul class="header__algorithm-list hidden" id="algorithmPopupList">
             <li value="caesar">Caesar cipher</li>
             <li value="vigenere">Vigenere Cipher</li>
+            <li value="oneTimePad">OTP</li>
           </ul>
           <button class="header__button header__button--exchange" id="exchangeButton"><img
               src="assets/image/bothWayArrow.png"></button>
@@ -46,7 +47,7 @@
             <button class="controller__button" id="keySelectorButton"><img src="./assets/image/key.png"></button>
             <button class="controller__button" id="sourceCopyButton"><img src="./assets/image/copy.png"></button>
           </div>
-          <div class="footer__key-display">
+          <div class="footer__key-display" id="footerKeyDisplay">
             <span class="footer__key-display--english" id="keyCounterEnglish">Key</span>
             <ul class="footer__key-set" id="keyCounterList">
               <li class="key-indicator">0</li>
@@ -59,6 +60,7 @@
         <span class="key-area__arrow--heading-button"></span>
         <span class="key-area__arrow--heading-key"></span>
         <ul class="key-area__list" id="keyScroll"></ul>
+        <input type="text" class="key-area__input hidden" id="keyInput">
       </div>
     </div>
     <div class="translator-wrapper">
