@@ -17,7 +17,7 @@
 
 <body>
   <header class="doc-header">
-    <a href="https://pandora2948.github.io/cipherTranslator">
+    <a href="https://pandora2948.github.io/cipherTranslator-v4-playfair">
       <img class="header__logo" src="./assets/image/lockImage.png">
       <h1>Cryptography translator</h1>
     </a>
@@ -32,6 +32,8 @@
           <ul class="header__algorithm-list hidden" id="algorithmPopupList">
             <li value="caesar">Caesar cipher</li>
             <li value="vigenere">Vigenere Cipher</li>
+            <li value="oneTimePad">OTP</li>
+            <li value="playfair">Playfair</li>
           </ul>
           <button class="header__button header__button--exchange" id="exchangeButton"><img
               src="assets/image/bothWayArrow.png"></button>
@@ -39,14 +41,17 @@
         <div class="translator__body">
           <textarea class="body__textarea" id="textSource"
             placeholder="Please Write Text That You Translate"></textarea>
-          <p class="body__tail" id="sourceLength">0</p>
+          <div class="body__tail">
+            <table class="tail__element--table" id="keyTable"></table>
+            <p class="tail__element tail__element--length" id="sourceLength">0</p>
+          </div>
         </div>
         <div class="translator__footer">
           <div class="footer__controller">
             <button class="controller__button" id="keySelectorButton"><img src="./assets/image/key.png"></button>
             <button class="controller__button" id="sourceCopyButton"><img src="./assets/image/copy.png"></button>
           </div>
-          <div class="footer__key-display">
+          <div class="footer__key-display" id="footerKeyDisplay">
             <span class="footer__key-display--english" id="keyCounterEnglish">Key</span>
             <ul class="footer__key-set" id="keyCounterList">
               <li class="key-indicator">0</li>
@@ -59,6 +64,7 @@
         <span class="key-area__arrow--heading-button"></span>
         <span class="key-area__arrow--heading-key"></span>
         <ul class="key-area__list" id="keyScroll"></ul>
+        <input type="text" class="key-area__input hidden" id="keyInput">
       </div>
     </div>
     <div class="translator-wrapper">
@@ -68,7 +74,7 @@
         </article>
         <div class="translator__body">
           <p class="body__textarea" id="modifiedTextArea"></p>
-          <button class="body__tail body__tail--clear-button" id="clearTextButton">Clear</button>
+          <button class="tail__element tail__element--clear-button" id="clearTextButton">Clear</button>
         </div>
         <div class="translator__footer">
           <div class="footer__controller">

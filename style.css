@@ -169,16 +169,33 @@ p.body__textarea {
   flex: 1;
 }
 
-.body__tail--clear-button {
-  cursor: pointer;
+.body__tail {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-.body__tail {
-  align-self: flex-end;
+.tail__element {
   margin: 1rem 2rem 1rem 0;
   font-size: 1.5rem;
   color: var(--text-place-holder-color);
   transition: color 0.15s;
+}
+
+.tail__element--table {
+  border-collapse: collapse;
+}
+
+.tail__element--table td {
+  border: 1px solid var(--text-place-holder-color);
+  padding: 0.2rem;
+  text-align: center;
+}
+
+.tail__element--clear-button {
+  cursor: pointer;
+  align-self: flex-end;
 }
 
 .translator__footer {
@@ -310,6 +327,14 @@ p.body__textarea {
   border: 2px solid black;
   position: relative;
   font-size: 1.2rem;
+}
+
+.key-area__input {
+  position: absolute;
+  align-self: center;
+  margin-left: 2.5em;
+  font-size: 1.2rem;
+  width: 40%;
 }
 
 .header__algorithm-display {

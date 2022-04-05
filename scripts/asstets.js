@@ -8,6 +8,7 @@ const asciiCodeAssets = {
   upperLastCode: 90,
   lowerStartCode: 97,
   lowerLastCode: 122,
+  lastAsciiCode: 126,
   symbolLength: 15,
   numberLength: 10,
   alphabetLength: 26
@@ -19,6 +20,8 @@ const domAssets = {
   algorithmPopup: document.querySelector('#algorithmPopupList'),
   firstAlgorithm: document.querySelector('#algorithmPopupList').children[0],
   secondAlgorithm: document.querySelector('#algorithmPopupList').children[1],
+  thirdAlgorithm: document.querySelector('#algorithmPopupList').children[2],
+  fourthAlgorithm: document.querySelector('#algorithmPopupList').children[3],
   encrypterExchanger: document.querySelector('#exchangeButton'),
   encrypterExchangerImage: document.querySelector('#exchangeButton').children[0],
   algorithmDisplay: document.querySelector('#modifiedAlgorithmDisplay'),
@@ -36,7 +39,9 @@ const domAssets = {
   modifiedCopyButton: document.querySelector('#modifiedCopyButton'),
   modifiedCopyButtonImage: document.querySelector('#modifiedCopyButton').children[0],
   keyPopup: document.querySelector('#keyPopup'),
-  keyScroll: document.querySelector('#keyScroll')
+  keyScroll: document.querySelector('#keyScroll'),
+  keyInput: document.querySelector('#keyInput'),
+  keyTable: document.querySelector('#keyTable'),
 }
 
 const translatorAssets = {
