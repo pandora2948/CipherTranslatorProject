@@ -46,10 +46,10 @@ const scrollEvent = {
         setTimeout(() => {
           li.classList.remove('scroll');
           li.style.transform = `translateX(-${this.scrollValue % scroll.offsetWidth}px)`
-        }, 250)
+        }, 250);
         setTimeout(() => {
           li.classList.add('scroll');
-        }, 260)
+        }, 260);
       }
     });
   },
@@ -57,8 +57,8 @@ const scrollEvent = {
   handleClick(e) {
     const presentSelctcor = document.querySelector('#firstKey')
     const scroll = domAssets.keyScroll
-    if(!presentSelctcor === false) {
-      presentSelctcor.removeAttribute('id')
+    if(presentSelctcor) {
+      presentSelctcor.removeAttribute('id');
     }
     this.scrollLeft = scroll.offsetLeft;
     this.clickCoordinate = e.target.offsetLeft;
@@ -67,7 +67,7 @@ const scrollEvent = {
     
     this.handlePosition();
     this.tmpKey = Math.floor(this.scrollValue / this.listWidth % asciiCodeAssets.alphabetLength);
-    for (let i = 0; i <= asciiCodeAssets.alphabetLength; i++) {
+    for (let i = 0; i <= asciiCodeAssets.alphabetLength; i += 1) {
       if (!this.tmpKey) {
         scroll.children[26].setAttribute('id', 'firstKey');
       }
@@ -277,9 +277,109 @@ const algorithm = {
       })
       .reduce((acc, curr) => {
         return acc + curr;
-      }, '')
+      }, '');
       modifiedOutput.innerHTML = tag;
     }
+  },
+
+  playfair() {
+    if (translatorAssets.algorithm !== 'playfair') return;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
+    const {isEncrypter, keyArray} = translatorAssets;
+    const listOfAscii = [];
+    lengthIndicator.innerText = sourceInput.value.length;
+    // 배열에 코드값 삽입
+    // 문자열 쌍의 값이 같을 경우 빈도수가 가장 낮은 물결 기호 코드 삽입
+    for (let i = 0; i < sourceInput.value.length; i++) {
+      listOfAscii.push(sourceInput.value.charCodeAt(i));
+      if (sourceInput.value.charCodeAt(i) === sourceInput.value.charCodeAt(i + 1) && listOfAscii.length % 2 === 1) {
+        listOfAscii.push(126);
+      }
+    }
+    // 암호화일때 문자열의 길이가 홀수일 경우
+
+    if (listOfAscii.length % 2 !== 0 && isEncrypter) {
+      listOfAscii.push(Math.floor(Math.random() * 96) + 32);
+      if (listOfAscii[listOfAscii.length - 1] === 127) {
+        listOfAscii[listOfAscii.length - 1] = 8364;
+      }
+    }
+    // 복호화시 문자열의 길이가 홀수일 경우
+    else if (listOfAscii.length % 2 !== 0 && !isEncrypter) {
+      alert("Please type Correct Cipher");
+    }
+    // 배열의 길이만큼 반복
+    for (let i = 0; i < listOfAscii.length; i += 1) {
+      // 문자열 배열의 값을 2차원 배열로 문자 쌍 생성
+      listOfAscii.splice(i,2, [listOfAscii[i], listOfAscii[i+1]]);
+      // currArr 는 문자열 배열내부의 값을 2차원 배열로 변환한 배열
+      const currArr = listOfAscii[i];
+      // flatKey 는 2차원 배열로 생성한 키 배열을 1차원 배열로 펼친 키 배열
+      const flatKey = keyArray.flat();
+      // 문자열쌍의 첫번째 문자의 열을 구하는 식
+      // 1차원 키 배열에서 첫번째 문자를 탐색한 뒤 해당 인덱스를 12로 나눈 나머지값
+      const firstCol = flatKey.indexOf(currArr[0]) % 12;
+      // 문자열 쌍의 첫번째 문자의 행을 구하는 식
+      // 1차원 키 배열에서 첫번째 문자를 탐색한 뒤 해당 인덱스를 12로 나눈 몫
+      const firstRow = Math.floor(flatKey.indexOf(currArr[0]) / 12);
+      // 문자열 쌍의 두번째 문자의 열을 구하는 식
+      // 1차원 키 배열에서 첫번째 문자를 탐색한 뒤 해당 인덱스를 12로 나눈 나머지값
+      const secondCol = flatKey.indexOf(currArr[1]) % 12;
+      // 문자열 쌍의 두번째 문자의 행을 구하는 식
+      // 1차원 키 배열에서 첫번째 문자를 탐색한 뒤 해당 인덱스를 12로 나눈 몫
+      const secondRow = Math.floor(flatKey.indexOf(currArr[1]) / 12);
+      // 암호화
+      if (isEncrypter) {
+        // 열이 같을 경우
+        if (firstCol === secondCol) {
+          // 행 값을 1 증가 시키며 모듈러 연산으로 처리
+          currArr[0] = keyArray[(firstRow + 1) % 8][firstCol];
+          currArr[1] = keyArray[(secondRow + 1) % 8][secondCol];
+        }
+        // 행이 같을경우
+        else if(firstRow === secondRow) {
+          // 열 값을 증가시키며 모듈러 연산으로 처리
+          currArr[0] = keyArray[firstRow][(firstCol + 1) % 12];
+          currArr[1] = keyArray[secondRow][(secondCol + 1) % 12];
+        }
+        // 행과 열이 다를 경우
+        else {
+          // 서로의 열 값으로 대치한다.
+          currArr[0] = keyArray[firstRow][secondCol];
+          currArr[1] = keyArray[secondRow][firstCol];
+        }
+      }
+      // 복호화
+      else {
+        // 열이 같을 경우
+        if (firstCol === secondCol) {
+          // 행 값을 1 감소 시키며 모듈러 연산으로 처리
+          currArr[0] = keyArray[(firstRow - 1 + 8) % 8][firstCol];
+          currArr[1] = keyArray[(secondRow - 1 + 8) % 8][secondCol];
+        }
+        // 행이 같을경우
+        else if(firstRow === secondRow) {
+          // 열 값을 감소시키며 모듈러 연산으로 처리
+          currArr[0] = keyArray[firstRow][(firstCol - 1 + 12) % 12];
+          currArr[1] = keyArray[secondRow][(secondCol - 1 + 12) % 12];
+        }
+        // 행과 열이 다를 경우
+        else {
+          // 서로의 열 값으로 대치한다.
+          currArr[0] = keyArray[firstRow][secondCol];
+          currArr[1] = keyArray[secondRow][firstCol];
+        }
+      }
+    }
+    // html 태그 생성
+    const tag = listOfAscii.flat()
+    .map((curr) => {
+      return `&#${curr};`;
+    })
+    .reduce((acc, curr) => {
+      return acc + curr;
+    }, '');
+    modifiedOutput.innerHTML = tag;
   }
 }
 
@@ -321,7 +421,7 @@ const handleEncrypter = () => {
   const input = domAssets.sourceInput;
   const output = domAssets.modifiedOutput;
   const buffer = input.value;
-  input.value = output.innerHTML;
+  input.value = output.innerText;
   output.innerText = buffer;
   if (translatorAssets.isEncrypter) {
     domAssets.encrypterExchangerImage.classList.add('decrypter');
@@ -353,18 +453,17 @@ const handleCopy = (target) => {
   if (target === domAssets.sourceCopyButton || target === domAssets.sourceCopyButtonImage) {
     navigator.clipboard.writeText(domAssets.sourceInput.value);
   }
-  else {
-    if(translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter) {
+
+  else if (translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter) {
       navigator.clipboard
       .writeText(`
 ==============================TextArea=============================
 ${domAssets.modifiedOutput.innerHTML}
 ==============================KeyArea=============================
 ${translatorAssets.keyArray}`);
-    }
-    else {
-      navigator.clipboard.writeText(domAssets.modifiedOutput.innerHTML)
-    }
+  }
+  else {
+    navigator.clipboard.writeText(domAssets.modifiedOutput.innerHTML);
   }
 }
 
@@ -374,21 +473,21 @@ const removeText = () => {
 }
 
 const selectKey = () => {
-  if(translatorAssets.keyArray.length > 5) return;
+  if (translatorAssets.keyArray.length > 5) return;
   if (translatorAssets.algorithm === 'caesar' || translatorAssets.keyArray[0] === 0) {
     translatorAssets.keyArray[0] = scrollEvent.tmpKey;
   }
   else {
-    domAssets.beforeKeyIndicator.innerText = 'Keys'
+    domAssets.beforeKeyIndicator.innerText = 'Keys';
     translatorAssets.keyArray.push(scrollEvent.tmpKey);
   }
-  scrollEvent.handleKey()
+  scrollEvent.handleKey();
 }
 
-handleKeyRole = () => {
+const handleKeyRole = () => {
   const keyInput = document.querySelector('#keyInput');
   const footerKey = document.querySelector('#footerKeyDisplay');
-  if(translatorAssets.algorithm === 'oneTimePad') {
+  if (translatorAssets.algorithm === 'oneTimePad' || translatorAssets.algorithm === 'playfair') {
     translator.keySelector.classList.add('hidden');
     keyInput.classList.remove('hidden');
     footerKey.classList.add('hidden');
@@ -398,4 +497,77 @@ handleKeyRole = () => {
     keyInput.classList.add('hidden');
     footerKey.classList.remove('hidden');
   }
+}
+// 키 테이블 생성
+const handleTable = () => {
+  const {keyInput ,keyTable} = domAssets;
+  if (translatorAssets.algorithm !== 'playfair') {
+    keyTable.innerHTML ='';
+    return;
+  }
+  // 사용자 입력 키값
+  const userKey = [];
+  // 실제 키 배열
+  const keyArray = [];
+  let code = 32;
+  // 사용자 입력의 인덱스를 참조하기 위한 값
+  let keyCount = 0;
+  // 텍스트인풋에서 받은 값을 userKey 배열에 아스키 코드값으로 저장
+  for (const character of keyInput.value) {
+    userKey.push(character.charCodeAt());
+  }
+  // 키 테이블 초기화
+  keyTable.innerText = '';
+  // 키 테이블의 높이만큼 반복
+  for (let i = 0; i < 8; i += 1) {
+    // html 행 태그 생성
+    const row = document.createElement('tr');
+    // 키 행 배열 생성 및 초기화
+    const keyRow = [];
+    // 키 테이블의 너비만큼 반복
+    for (let j = 0; j < 12; j += 1) {
+      // 키 테이블에 동일한 값이 있을 경우 유저 키의 인덱스를 증가시킴
+      while (keyArray.flat().includes(userKey[keyCount]) || keyRow.includes(userKey[keyCount])) {
+        keyCount += 1;
+      }
+      // 유저 키 인덱스가 유저 키 길이보다 클 경우
+      if (keyCount >= userKey.length) {
+        // 유저 키에 현재 코드 값이 존재하지 않을때 까지 코드값 1 증가
+        while (userKey.includes(code)) {
+          code += 1;
+        }
+        // 코드값이 127일 경우 키 행과 테이블 요소에 8364 를 삽입 후 코드 값 1 증가
+        if (code === 127) {
+          keyRow.push(8364);
+          const column = document.createElement('td');
+          column.innerHTML = `&#${8364};`;
+          row.append(column);
+          code += 1;
+        }
+        // 키 행과 테이블 요소에 코드 값 삽입 후 코드 값 1 증가
+        else {
+          keyRow.push(code);
+          const column = document.createElement('td');
+          column.innerHTML = `&#${code};`;
+          row.append(column);
+          code += 1;
+        }
+      }
+      // 유저 키의 코드값이 8500 이하일 경우 키 행 배열에 추가 후 테이블 요소에 추가후 유저 키 인덱스 1 증가
+      else if (userKey[keyCount] < 8500) {
+        keyRow.push(userKey[keyCount]);
+        const column = document.createElement('td');
+        column.innerHTML = `&#${userKey[keyCount]};`;
+        row.append(column);
+        keyCount += 1;
+      }
+      // 그 외읠경우 실행종료
+      else return;
+    }
+    // 각 행의 생성이 끝나면 키 배열에 배열 추가
+    keyArray.push(keyRow);
+    // 테이블 요소 삽입
+    keyTable.append(row);
+  }
+  translatorAssets.keyArray = keyArray;
 }

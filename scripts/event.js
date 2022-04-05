@@ -1,5 +1,5 @@
 const handleClick = (e) => {
-  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, thirdAlgorithm, keyInput} = domAssets;
+  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, thirdAlgorithm, fourthAlgorithm, keyInput, keyTable} = domAssets;
   const target = e.target;
   const firstKey = document.querySelector('#firstKey');
   translatorAssets.headerToggle = false;
@@ -19,16 +19,25 @@ const handleClick = (e) => {
 
     case firstAlgorithm:
       handleAlgorithm(target);
+      translatorAssets.keyArray;
       handleKeyRole();
       break;
 
     case secondAlgorithm:
       handleAlgorithm(target);
+      translatorAssets.keyArray;
       handleKeyRole();
       break;
 
     case thirdAlgorithm:
       handleAlgorithm(target);
+      translatorAssets.keyArray;
+      handleKeyRole();
+      break;
+
+    case fourthAlgorithm:
+      handleAlgorithm(target);
+      translatorAssets.keyArray;
       handleKeyRole();
       break;
     
@@ -99,6 +108,7 @@ const handleClick = (e) => {
     translatorAssets.keytoggle = true;
     scrollEvent.handleClick(e)
   }
+  handleTable();
   handleheaderPopup(translatorAssets.headerToggle);
   handleKeyWrapper(translatorAssets.keytoggle, translatorAssets.isButton);
 }
@@ -218,9 +228,9 @@ const handleOut = (e) => {
       target.parentNode.classList.remove('mouse-over--bg');
       break;
 
-      case keyDefine:
-        target.classList.remove('mouse-over--bg');
-        break;
+    case keyDefine:
+      target.classList.remove('mouse-over--bg');
+      break;
 
     default:
       return;
@@ -234,8 +244,9 @@ document.addEventListener('mouseout', handleOut);
 domAssets.sourceInput.addEventListener('keydown', (e) => {
   switch (e.keyCode) {
     case 13:
-      e.preventDefault()
-      algorithm.oneTimePad()
+      e.preventDefault();
+      algorithm.oneTimePad();
+      algorithm.playfair();
       break;
 
     default:
@@ -243,16 +254,29 @@ domAssets.sourceInput.addEventListener('keydown', (e) => {
   }
 })
 
+domAssets.keyInput.addEventListener('change', (e) => {
+  if (translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter === false) {
+    algorithm.oneTimePad();
+  }
+  else if (translatorAssets.algorithm === 'playfair') {
+    algorithm.playfair();
+    handleTable();
+  }
+})
+
 domAssets.sourceInput.addEventListener('focus', () => {
   const soruceTranslator = document.querySelector('#sourceTranslator');
-  soruceTranslator.classList.add('focus')
+  soruceTranslator.classList.add('focus');
+  if (translatorAssets.algorithm === 'oneTimePad' || translatorAssets.algorithm === 'playfair') return;
   this.translateInterval = setInterval(() => {
-    if (translatorAssets.algorithm === 'oneTimePad') return;
     algorithm[translatorAssets.algorithm]()
   }, 100);
 })
+
 domAssets.sourceInput.addEventListener('blur', () => {
   const soruceTranslator = document.querySelector('#sourceTranslator');
   soruceTranslator.classList.remove('focus');
-  clearInterval(translateInterval);
+  if (!(translatorAssets.algorithm === 'oneTimePad' || translatorAssets.algorithm === 'playfair')) {
+    clearInterval(translateInterval);
+  }
 })
