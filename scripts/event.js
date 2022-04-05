@@ -1,10 +1,11 @@
 const handleClick = (e) => {
-  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, sourceInput, modifiedOutput} = domAssets;
+  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, thirdAlgorithm, keyInput} = domAssets;
   const target = e.target;
   const firstKey = document.querySelector('#firstKey');
   translatorAssets.headerToggle = false;
   translatorAssets.keytoggle = false;
   translatorAssets.isButton = false;
+
   switch (target) {
     case algorithmSelector:
       handleDisplay(algorithmSelector);
@@ -18,18 +19,25 @@ const handleClick = (e) => {
 
     case firstAlgorithm:
       handleAlgorithm(target);
+      handleKeyRole();
       break;
 
     case secondAlgorithm:
       handleAlgorithm(target);
+      handleKeyRole();
+      break;
+
+    case thirdAlgorithm:
+      handleAlgorithm(target);
+      handleKeyRole();
       break;
     
     case encrypterExchanger:
-      handleEncrypter(translatorAssets.isEncrypter, sourceInput, modifiedOutput);
+      handleEncrypter();
       break;
     
     case encrypterExchangerImage:
-      handleEncrypter(translatorAssets.isEncrypter, sourceInput, modifiedOutput);
+      handleEncrypter();
       break;
       
     case keySelector:
@@ -52,9 +60,7 @@ const handleClick = (e) => {
 
     case keyResetButton:
       translatorAssets.keyArray = [0];
-      scrollEvent.scrollValue = 0;
       scrollEvent.handleKey();
-      scrollEvent.handlePosition()
       break;
 
     case modifiedCopyButton:
@@ -82,6 +88,9 @@ const handleClick = (e) => {
     case firstKey:
       selectKey();
       break;
+
+    case keyInput:
+      translatorAssets.keytoggle = true;
 
     default:
       break;
@@ -222,11 +231,23 @@ document.addEventListener('click', handleClick);
 document.addEventListener('mouseover', handleOver);
 document.addEventListener('mouseout', handleOut);
 
+domAssets.sourceInput.addEventListener('keydown', (e) => {
+  switch (e.keyCode) {
+    case 13:
+      e.preventDefault()
+      algorithm.oneTimePad()
+      break;
+
+    default:
+      return;
+  }
+})
 
 domAssets.sourceInput.addEventListener('focus', () => {
   const soruceTranslator = document.querySelector('#sourceTranslator');
   soruceTranslator.classList.add('focus')
   this.translateInterval = setInterval(() => {
+    if (translatorAssets.algorithm === 'oneTimePad') return;
     algorithm[translatorAssets.algorithm]()
   }, 100);
 })

@@ -19,6 +19,7 @@ const domAssets = {
   algorithmPopup: document.querySelector('#algorithmPopupList'),
   firstAlgorithm: document.querySelector('#algorithmPopupList').children[0],
   secondAlgorithm: document.querySelector('#algorithmPopupList').children[1],
+  thirdAlgorithm: document.querySelector('#algorithmPopupList').children[2],
   encrypterExchanger: document.querySelector('#exchangeButton'),
   encrypterExchangerImage: document.querySelector('#exchangeButton').children[0],
   algorithmDisplay: document.querySelector('#modifiedAlgorithmDisplay'),
@@ -36,7 +37,8 @@ const domAssets = {
   modifiedCopyButton: document.querySelector('#modifiedCopyButton'),
   modifiedCopyButtonImage: document.querySelector('#modifiedCopyButton').children[0],
   keyPopup: document.querySelector('#keyPopup'),
-  keyScroll: document.querySelector('#keyScroll')
+  keyScroll: document.querySelector('#keyScroll'),
+  keyInput: document.querySelector('#keyInput'),
 }
 
 const translatorAssets = {

@@ -312,6 +312,14 @@ p.body__textarea {
   font-size: 1.2rem;
 }
 
+.key-area__input {
+  position: absolute;
+  align-self: center;
+  margin-left: 2.5em;
+  font-size: 1.2rem;
+  width: 40%;
+}
+
 .header__algorithm-display {
   padding: 0 0 0 1.5rem;
   font-size: 1.3rem;

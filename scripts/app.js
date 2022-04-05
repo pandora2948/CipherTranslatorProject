@@ -23,14 +23,18 @@ const scrollEvent = {
   tmpKey:0,
 
   handleKey() {
-    const keyIndicator = domAssets.keyIndicatorList;
-    const {keyArray} = translatorAssets;
-
-    keyIndicator.innerHTML = '';
-    keyArray.forEach((k) => {
-      keyIndicator.innerHTML += `<li class="key-indicator">${k}</li>`
-    })
-    algorithm[translatorAssets.algorithm]();
+    if(translatorAssets.algorithm === 'oneTimePad') {
+      algorithm.oneTimePad();
+    }
+    else {
+      const keyIndicator = domAssets.keyIndicatorList;
+      const {keyArray} = translatorAssets;
+      keyIndicator.innerHTML = '';
+      keyArray.forEach((k) => {
+        keyIndicator.innerHTML += `<li class="key-indicator">${k}</li>`
+      })
+      algorithm[translatorAssets.algorithm]();
+    }
   },
 
   handlePosition() {
@@ -77,11 +81,12 @@ const scrollEvent = {
 const algorithm = {
   caesar() {
     const {spaceCode, symbolStartCode, symbolLastCode, numberStartCode, numberLastCode, upperStartCode, upperLastCode, lowerStartCode, lowerLastCode, symbolLength, numberLength, alphabetLength} = asciiCodeAssets;
-    const {sourceInput, modifiedOutput} = domAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     const inputLength = sourceInput.value.length;
     const asciiLength = listOfAscii.length;
+    lengthIndicator.innerText = inputLength;
     for (let i = 0; i < inputLength; i += 1) {
       const asciiCode = sourceInput.value.charCodeAt(i);
       const key = translatorAssets.keyArray[0];
@@ -168,15 +173,15 @@ const algorithm = {
 
   vigenere() {
     const {upperStartCode, upperLastCode, lowerStartCode, lowerLastCode, alphabetLength} = asciiCodeAssets;
-    const {sourceInput, modifiedOutput} = domAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
     const isEncrypter = translatorAssets.isEncrypter;
     const listOfAscii = [];
     const inputLength = sourceInput.value.length;
     const asciiLength = listOfAscii.length;
-
+    lengthIndicator.innerText = inputLength;
     for (let i = 0; i < inputLength; i += 1) {
       const asciiCode = sourceInput.value.charCodeAt(i);
-      const key = translatorAssets.keyArray[i % translatorAssets.keyArray.length] 
+      const key = translatorAssets.keyArray[i % translatorAssets.keyArray.length];
 
       if (asciiCode <= upperLastCode && asciiCode >= upperStartCode) {
         if(isEncrypter) {
@@ -226,19 +231,67 @@ const algorithm = {
       return acc + curr;
     }, '')
     modifiedOutput.innerHTML = tag;
+  },
+
+  oneTimePad() {
+    if(translatorAssets.algorithm !== 'oneTimePad') return;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
+    const isEncrypter = translatorAssets.isEncrypter;
+    const listOfAscii = [];
+    if (isEncrypter) {
+      const inputLength = domAssets.sourceInput.value.length;
+      translatorAssets.keyArray = [];
+      for (let i = 0; i < inputLength; i += 1) {
+        translatorAssets.keyArray.push(Math.floor(Math.random() * 256));
+        const asciiCode = sourceInput.value.charCodeAt(i);
+        const key = translatorAssets.keyArray[i];
+        listOfAscii[i] = (asciiCode ^ key).toString(2);
+        }
+        domAssets.keyInput.value = translatorAssets.keyArray;
+        lengthIndicator.innerText = inputLength;
+        const tag = listOfAscii
+        .map((curr) => {
+          return `${curr.padStart(8, '0')} `;
+        })
+        .reduce((acc, curr) => {
+          return acc + curr;
+        }, '').trim();
+        modifiedOutput.innerText = tag;
+      }
+    else{
+      const inputLength = sourceInput.value.split(' ').length;
+      translatorAssets.keyArray = [];
+      for (let i = 0; i < domAssets.keyInput.value.split(',').length; i += 1){
+        translatorAssets.keyArray.push(domAssets.keyInput.value.split(',')[i]);
+      }
+      lengthIndicator.innerText = inputLength;
+      for(let i = 0; i < inputLength; i += 1) {
+        const asciiCode = parseInt(sourceInput.value.split(' ')[i], 2);
+        const key = translatorAssets.keyArray[i];
+        listOfAscii[i] = asciiCode ^ key;
+      }
+
+      const tag = listOfAscii
+      .map((curr) => {
+        return `&#${curr};`;
+      })
+      .reduce((acc, curr) => {
+        return acc + curr;
+      }, '')
+      modifiedOutput.innerHTML = tag;
+    }
   }
 }
 
-const handleDisplay = (...target) => {
-  target.forEach((t) => {
+const handleDisplay = (t) => {
     if (t.classList.contains('hidden')) {
       t.removeAttribute('display') 
     }
     else {
       t.removeAttribute('display')
     }
-  })
 }
+
 
 const handleheaderPopup = (toggle) => {
   const {algorithmSelectorArrow, algorithmPopup} = domAssets;
@@ -264,19 +317,21 @@ const handleAlgorithm = (target) => {
   scrollEvent.handleKey();
 }
 
-const handleEncrypter = (isEncrypter, source, modified) => {
-  const buffer = source.value;
-  source.value = modified.innerHTML;
-  modified.innerText = buffer;
-  if (isEncrypter) {
-    domAssets.encrypterExchangerImage.classList.add('decrypter')
+const handleEncrypter = () => {
+  const input = domAssets.sourceInput;
+  const output = domAssets.modifiedOutput;
+  const buffer = input.value;
+  input.value = output.innerHTML;
+  output.innerText = buffer;
+  if (translatorAssets.isEncrypter) {
+    domAssets.encrypterExchangerImage.classList.add('decrypter');
     translatorAssets.isEncrypter = false;
-    algorithm[translatorAssets.algorithm]()
+    algorithm[translatorAssets.algorithm]();
   }
   else {
-    domAssets.encrypterExchangerImage.classList.remove('decrypter')
+    domAssets.encrypterExchangerImage.classList.remove('decrypter');
     translatorAssets.isEncrypter = true;
-    algorithm[translatorAssets.algorithm]()
+    algorithm[translatorAssets.algorithm]();
   }
 }
 
@@ -290,16 +345,26 @@ const handleKeyWrapper = (toggle, isButton) => {
     }
   }
   else {
-    domAssets.keyPopup.classList.add('hidden')
+    domAssets.keyPopup.classList.add('hidden');
   }
 }
 
 const handleCopy = (target) => {
   if (target === domAssets.sourceCopyButton || target === domAssets.sourceCopyButtonImage) {
-    navigator.clipboard.writeText(`${domAssets.sourceInput.value}`);
+    navigator.clipboard.writeText(domAssets.sourceInput.value);
   }
   else {
-    navigator.clipboard.writeText(domAssets.modifiedOutput.innerText);
+    if(translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter) {
+      navigator.clipboard
+      .writeText(`
+==============================TextArea=============================
+${domAssets.modifiedOutput.innerHTML}
+==============================KeyArea=============================
+${translatorAssets.keyArray}`);
+    }
+    else {
+      navigator.clipboard.writeText(domAssets.modifiedOutput.innerHTML)
+    }
   }
 }
 
@@ -318,4 +383,19 @@ const selectKey = () => {
     translatorAssets.keyArray.push(scrollEvent.tmpKey);
   }
   scrollEvent.handleKey()
+}
+
+handleKeyRole = () => {
+  const keyInput = document.querySelector('#keyInput');
+  const footerKey = document.querySelector('#footerKeyDisplay');
+  if(translatorAssets.algorithm === 'oneTimePad') {
+    translator.keySelector.classList.add('hidden');
+    keyInput.classList.remove('hidden');
+    footerKey.classList.add('hidden');
+  }
+  else {
+    translator.keySelector.classList.remove('hidden');
+    keyInput.classList.add('hidden');
+    footerKey.classList.remove('hidden');
+  }
 }
