@@ -355,13 +355,16 @@ const algorithm = {
     const listOfAscii = [];
     const inputLength = sourceInput.value.length;
     lengthIndicator.innerText = inputLength;
-
+    // 입력의 길이만큼 반복
     for (let i = 0; i < inputLength; i += 1) {
       let code = sourceInput.value.charCodeAt(i);
+      // 소문자일경우
       if (code <= lowerLastCode && code >= lowerStartCode) {
+        // 암호화
         if (isEncrypter) {
           code = (code % lowerStartCode * k1 + k2) % 26 + lowerStartCode;
         }
+        // 복호화
         else {
           let j = 0;
           while (k1 * j % 26 !== 1){
@@ -370,10 +373,13 @@ const algorithm = {
           code = (Math.floor(((code % lowerStartCode - k2 + 26) % 26) * j)) % 26 + lowerStartCode;
         }
       }
+      // 대문자일경우
       else if (code <= upperLastCode && code >= upperStartCode) {
+        // 암호화
         if (isEncrypter) {
           code = (code % upperStartCode * k1 + k2) % 26 + upperStartCode;
         }
+        // 복호화
         else {
           let j = 0;
           while (k1 * j % 26 !== 1){
@@ -517,14 +523,15 @@ const handleKeyRole = () => {
     })
     footerKey.classList.add('hidden');
   }
-
+//  암호 알고리즘이 아핀암호 일 경우
   else if (translatorAssets.algorithm === 'affine') {
+    // 키 입력 생성
     keyAreaAsset.generate(keyAreaAsset.keySet);
     keyAreaAsset.generate(keyAreaAsset.keySelect, domAssets.keySet);
     keyAreaAsset.generate(keyAreaAsset.keyInput, domAssets.keySet);
     domAssets.keyInput.value = 1;
     domAssets.keyInput.setAttribute('type', 'number');
-    domAssets.keyInput.setAttribute('pattern', '^[^0]\\d{1,2}');
+    domAssets.keyInput.setAttribute('min', '1');
     translatorAssets.coprime.forEach((t) => {
       const option = document.createElement('option');
       option.innerText = t;
@@ -532,6 +539,7 @@ const handleKeyRole = () => {
       domAssets.keySelect.append(option);
     })
     domAssets.keySet.addEventListener('change', () => {
+      // 첫 값이 0이 아닌 숫자이며 총 길이는 3자리
       domAssets.keyInput.value = domAssets.keyInput.value.match('^[^0]\\d{0,2}');
       selectKey();
       algorithm.affine();
