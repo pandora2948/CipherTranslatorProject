@@ -343,6 +343,56 @@ const algorithm = {
       return acc + curr;
     }, '');
     modifiedOutput.innerHTML = tag;
+  },
+  
+  affine() {
+    let k1 = translatorAssets.keyArray[0];
+    const k2 = translatorAssets.keyArray[1];
+    if(!k2) return;
+    const {upperStartCode, upperLastCode, lowerStartCode, lowerLastCode} = asciiCodeAssets;
+    const {sourceInput, modifiedOutput, lengthIndicator} = domAssets;
+    const isEncrypter = translatorAssets.isEncrypter;
+    const listOfAscii = [];
+    const inputLength = sourceInput.value.length;
+    lengthIndicator.innerText = inputLength;
+
+    for (let i = 0; i < inputLength; i += 1) {
+      let code = sourceInput.value.charCodeAt(i);
+      if (code <= lowerLastCode && code >= lowerStartCode) {
+        if (isEncrypter) {
+          code = (code % lowerStartCode * k1 + k2) % 26 + lowerStartCode;
+        }
+        else {
+          let j = 0;
+          while (k1 * j % 26 !== 1){
+            j += 1;
+          }
+          code = (Math.floor(((code % lowerStartCode - k2 + 26) % 26) * j)) % 26 + lowerStartCode;
+        }
+      }
+      else if (code <= upperLastCode && code >= upperStartCode) {
+        if (isEncrypter) {
+          code = (code % upperStartCode * k1 + k2) % 26 + upperStartCode;
+        }
+        else {
+          let j = 0;
+          while (k1 * j % 26 !== 1){
+            j += 1;
+          }
+          code = (Math.floor(((code % upperStartCode - k2 + 26) % 26) * j)) % 26 + upperStartCode;
+        }
+      }
+      listOfAscii[i] = code
+    }
+
+    const tag = listOfAscii
+    .map((curr) => {
+      return `&#${curr};`;
+    })
+    .reduce((acc, curr) => {
+      return acc + curr;
+    }, '')
+    modifiedOutput.innerHTML = tag;
   }
 }
 
@@ -544,12 +594,9 @@ const handleTable = () => {
         row.append(column);
         keyCount += 1;
       }
-      // 그 외읠경우 실행종료
       else return;
     }
-    // 각 행의 생성이 끝나면 키 배열에 배열 추가
     keyArray.push(keyRow);
-    // 테이블 요소 삽입
     keyTable.append(row);
   }
   translatorAssets.keyArray = keyArray;
