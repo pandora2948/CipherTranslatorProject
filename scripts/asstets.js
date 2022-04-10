@@ -1,3 +1,11 @@
+class keyAreaElement {
+  constructor(elementName, classList, id) {
+    this.elementName = elementName;
+    this.classList = classList;
+    this.id = id;
+  }
+}
+
 const asciiCodeAssets = {
   spaceCode: 32,
   symbolStartCode: 33,
@@ -22,6 +30,7 @@ const domAssets = {
   secondAlgorithm: document.querySelector('#algorithmPopupList').children[1],
   thirdAlgorithm: document.querySelector('#algorithmPopupList').children[2],
   fourthAlgorithm: document.querySelector('#algorithmPopupList').children[3],
+  fifthAlgorithm: document.querySelector('#algorithmPopupList').children[4],
   encrypterExchanger: document.querySelector('#exchangeButton'),
   encrypterExchangerImage: document.querySelector('#exchangeButton').children[0],
   algorithmDisplay: document.querySelector('#modifiedAlgorithmDisplay'),
@@ -50,5 +59,21 @@ const translatorAssets = {
   headerToggle: false,
   keytoggle: false,
   isEncrypter: true,
-  isButton: false
+  isButton: false,
+  coprime: [3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]
 }
+
+const keyAreaAsset = {
+  keyScroll : new keyAreaElement('ul', 'key-area__list', 'keyScroll'),
+  keyInput : new keyAreaElement('input', 'key-area__input', 'keyInput'),
+  keySet : new keyAreaElement('div', 'key-area__key-set', 'keySet'),
+  keySelect : new keyAreaElement('select', 'key-set__select', 'keySelect'),
+
+  generate(element, target = domAssets.keyPopup) {
+    const dom = document.createElement(element.elementName);
+    dom.classList.add(element.classList);
+    dom.setAttribute('id', element.id);
+    target.append(dom);
+    domAssets[element.id] = document.querySelector(`#${element.id}`);
+  }
+} 

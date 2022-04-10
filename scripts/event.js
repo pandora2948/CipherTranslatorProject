@@ -1,5 +1,6 @@
+handleKeyRole();
 const handleClick = (e) => {
-  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, thirdAlgorithm, fourthAlgorithm, keyInput, keyTable} = domAssets;
+  const {algorithmSelector, algorithmSelectorArrow, firstAlgorithm, secondAlgorithm, encrypterExchanger, encrypterExchangerImage, keySelector, keySelectorImage, sourceCopyButton, sourceCopyButtonImage, keyResetButton, modifiedCopyButton, modifiedCopyButtonImage, clearButton, keyPopup, keyScroll, thirdAlgorithm, fourthAlgorithm, keyInput, fifthAlgorithm, keySet, keySelect} = domAssets;
   const target = e.target;
   const firstKey = document.querySelector('#firstKey');
   translatorAssets.headerToggle = false;
@@ -19,25 +20,26 @@ const handleClick = (e) => {
 
     case firstAlgorithm:
       handleAlgorithm(target);
-      translatorAssets.keyArray;
       handleKeyRole();
       break;
 
     case secondAlgorithm:
       handleAlgorithm(target);
-      translatorAssets.keyArray;
       handleKeyRole();
       break;
 
     case thirdAlgorithm:
       handleAlgorithm(target);
-      translatorAssets.keyArray;
       handleKeyRole();
       break;
 
     case fourthAlgorithm:
       handleAlgorithm(target);
-      translatorAssets.keyArray;
+      handleKeyRole();
+      break;
+      
+    case fifthAlgorithm:
+      handleAlgorithm(target);
       handleKeyRole();
       break;
     
@@ -89,17 +91,21 @@ const handleClick = (e) => {
       translatorAssets.keytoggle = true;
       break;
 
-    case keyScroll:
-      handleDisplay(keyPopup);
-      translatorAssets.keytoggle = true;
-      break;
-
     case firstKey:
       selectKey();
       break;
 
     case keyInput:
       translatorAssets.keytoggle = true;
+      break;
+
+    case keySet:
+      translatorAssets.keytoggle = true;
+      break;
+
+    case keySelect:
+      translatorAssets.keytoggle = true;
+      break;
 
     default:
       break;
@@ -251,16 +257,6 @@ domAssets.sourceInput.addEventListener('keydown', (e) => {
 
     default:
       return;
-  }
-})
-
-domAssets.keyInput.addEventListener('change', (e) => {
-  if (translatorAssets.algorithm === 'oneTimePad' && translatorAssets.isEncrypter === false) {
-    algorithm.oneTimePad();
-  }
-  else if (translatorAssets.algorithm === 'playfair') {
-    algorithm.playfair();
-    handleTable();
   }
 })
 
